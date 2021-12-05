@@ -1,0 +1,37 @@
+﻿<Page x:Class="TaskManager.Pages.Forms.AuthForm"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TaskManager.Pages.Forms"
+      mc:Ignorable="d" 
+      
+      d:DesignHeight="450" 
+      d:DesignWidth="800"
+      Title="Authentication"
+      Style="{StaticResource WinStyle}">
+
+    <Page.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+    </Page.Resources>
+
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="250">
+        <TextBlock Text="Логин"/>
+        <TextBox x:Name="LoginField"/>
+
+        <TextBlock Text="Пароль"/>
+        <TextBox x:Name="PasswordField"/>
+
+        <Button Content="Авторизоваться" Click="AuthButton_Click"/>
+        <TextBlock HorizontalAlignment="Center">
+            <Hyperlink FontSize="12" Click="RegistrationButton_Click">Зарегистрироваться</Hyperlink>
+        </TextBlock>
+    </StackPanel>
+    
+</Page>
