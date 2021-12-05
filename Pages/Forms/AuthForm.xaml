@@ -22,7 +22,7 @@
     </Page.Resources>
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="250">
-        <TextBlock Text="Login or email"/>
+        <TextBlock Text="Login"/>
         <TextBox x:Name="LoginField"/>
 
         <TextBlock Text="Password"/>
