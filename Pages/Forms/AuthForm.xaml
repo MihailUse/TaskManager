@@ -22,6 +22,8 @@
     </Page.Resources>
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="250">
+        <TextBlock x:Name="ErrorField" Margin="0,0,0,15" Foreground="Red" TextWrapping="Wrap" Visibility="Collapsed"/>
+
         <TextBlock Text="Login"/>
         <TextBox x:Name="LoginField"/>
 

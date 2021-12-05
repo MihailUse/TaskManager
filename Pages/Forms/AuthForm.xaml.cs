@@ -31,12 +31,35 @@ namespace TaskManager.Pages.Forms
 
 		private void AuthButton_Click(object sender, RoutedEventArgs e)
 		{
+			string login = LoginField.Text.Trim();
+			string password = PasswordField.Text.Trim();
+
+			User user = DataBaseContext.User.Where(x => x.login.Equals(login)).FirstOrDefault();
+
+			if (user == null)
+			{
+				ShowError("Wrong login");
+				return;
+			}
+
+			if (!user.password.Equals(password))
+			{
+				ShowError("Wrong password");
+				return;
+			}
+
 			NavigationService.Navigate(new MainPage(ref DataBaseContext, 1));
 		}
 
 		private void RegistrationButton_Click(object sender, RoutedEventArgs e)
 		{
 			NavigationService.Navigate(new RegistrationForm(ref DataBaseContext));
+		}
+
+		private void ShowError(string error)
+		{
+			ErrorField.Visibility = Visibility.Visible;
+			ErrorField.Text = error;
 		}
 	}
 }

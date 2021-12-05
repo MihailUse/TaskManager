@@ -55,7 +55,7 @@ namespace TaskManager.Pages.Forms
 				password = password,
 				createdAt = DateTime.Now
 			};
-			
+
 			DataBaseContext.User.Add(user);
 			DataBaseContext.SaveChanges();
 
