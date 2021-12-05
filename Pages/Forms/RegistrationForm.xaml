@@ -25,15 +25,18 @@
         <TextBlock Text="Login"/>
         <TextBox x:Name="LoginField"/>
 
+        <TextBlock Text="Email"/>
+        <TextBox x:Name="EmailField"/>
+
         <TextBlock Text="Password"/>
         <TextBox x:Name="PasswordField"/>
 
         <TextBlock Text="Repeat password"/>
         <TextBox x:Name="PasswordRepeatField"/>
 
-        <Button Click="RegistrationButton_Click">Sing up</Button>
+        <Button Click="RegistrationButton_Click">Sign up</Button>
         <TextBlock HorizontalAlignment="Center" FontSize="13">
-            already registered? <Hyperlink Click="AuthButton_Click">Login</Hyperlink>
+            already registered? <Hyperlink Click="AuthButton_Click">Sign in</Hyperlink>
         </TextBlock>
     </StackPanel>
 </Page>

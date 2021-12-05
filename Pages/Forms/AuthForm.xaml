@@ -14,7 +14,7 @@
     <Page.Resources>
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,0,0,10" />
+            <Setter Property="Margin" Value="0,2,0,10" />
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="14" />
@@ -22,16 +22,15 @@
     </Page.Resources>
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="250">
-        <TextBlock Text="Логин"/>
+        <TextBlock Text="Login or email"/>
         <TextBox x:Name="LoginField"/>
 
-        <TextBlock Text="Пароль"/>
+        <TextBlock Text="Password"/>
         <TextBox x:Name="PasswordField"/>
 
-        <Button Content="Авторизоваться" Click="AuthButton_Click"/>
+        <Button Content="Sign in" Click="AuthButton_Click"/>
         <TextBlock HorizontalAlignment="Center">
-            <Hyperlink FontSize="12" Click="RegistrationButton_Click">Зарегистрироваться</Hyperlink>
+            not registered? <Hyperlink Click="RegistrationButton_Click">Sign up</Hyperlink>
         </TextBlock>
     </StackPanel>
-    
 </Page>
