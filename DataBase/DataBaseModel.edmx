@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище DataTestCModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище DataTestCModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Assignment">
           <Key>
             <PropertyRef Name="id" />
@@ -31,6 +31,7 @@
           <Property Name="description" Type="nvarchar(max)" />
           <Property Name="logo" Type="varbinary(max)" />
           <Property Name="createdAt" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="updatedAt" Type="datetime2" Precision="7" />
           <Property Name="detetedAt" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="Role">
@@ -206,8 +207,7 @@
             <End Role="Task" EntitySet="Task" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DataTestCModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -246,6 +246,7 @@
           <Property Name="detetedAt" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Membership" Relationship="Self.FK_Membership_Project" FromRole="Project" ToRole="Membership" />
           <NavigationProperty Name="Task" Relationship="Self.FK_Task_Project" FromRole="Project" ToRole="Task" />
+          <Property Name="updatedAt" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -454,6 +455,7 @@
           <EntitySetMapping Name="Project">
             <EntityTypeMapping TypeName="DataTestCModel.Project">
               <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="updatedAt" ColumnName="updatedAt" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="description" ColumnName="description" />
