@@ -1,7 +1,7 @@
 USE DataTestC;
 GO
 
-/* Triggers to update the date in createdAt */
+/* Triggers to update the date in createdAt column */
 
 /* For User table */
 CREATE TRIGGER [USER_INSERT]
@@ -40,7 +40,7 @@ END
 GO
 
 
-/* Triggers to update the date in updatedAt */
+/* Triggers to update the date in updatedAt column */
 
 /* For User table */
 CREATE TRIGGER [USER_UPDATE]
@@ -49,6 +49,18 @@ CREATE TRIGGER [USER_UPDATE]
 AS
 BEGIN
 	UPDATE [User] 
+    SET updatedAt = GETUTCDATE()
+    WHERE Id = (Select Id from Inserted)
+END 
+GO
+
+/* For Project table */
+CREATE TRIGGER [PROJECT_UPDATE]
+	ON [Project]
+	AFTER UPDATE
+AS
+BEGIN
+	UPDATE [Project] 
     SET updatedAt = GETUTCDATE()
     WHERE Id = (Select Id from Inserted)
 END 
@@ -67,7 +79,7 @@ END
 GO
 
 
-/* Triggers to update the date in updatedAt */
+/* Triggers to update the date in detetedAt column */
 
 /* For User table */
 CREATE TRIGGER [USER_DELETE]
