@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TaskManager.DataBase;
+using ImageGenerator;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace TaskManager.Pages.Forms
 {
@@ -49,11 +53,20 @@ namespace TaskManager.Pages.Forms
 				return;
 			}
 
+			Bitmap avatar = Generator.ResizeImage(Generator.GenerateImage(), 256, 256);
+			byte[] avatarBytes;
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				avatar.Save(ms, ImageFormat.Png);
+				avatarBytes = ms.ToArray();
+			}
+
 			User user = new User()
 			{
 				login = login,
 				password = password,
-				createdAt = DateTime.Now
+				avatar = avatarBytes,
 			};
 
 			DataBaseContext.User.Add(user);
