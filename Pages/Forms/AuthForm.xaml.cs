@@ -48,7 +48,7 @@ namespace TaskManager.Pages.Forms
 				return;
 			}
 
-			NavigationService.Navigate(new MainPage(ref DataBaseContext, 1));
+			NavigationService.Navigate(new MainPage(ref DataBaseContext, user));
 		}
 
 		private void RegistrationButton_Click(object sender, RoutedEventArgs e)

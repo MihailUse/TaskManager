@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         
         Title="MainWindow"
-        Height="450" Width="550"
-        MinHeight="260" MinWidth="280"
+        Height="500" Width="550"
+        MinHeight="500" MinWidth="400"
         Closing="MainWindow_Closing"  
         Background="WhiteSmoke">
 

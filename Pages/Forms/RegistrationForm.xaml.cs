@@ -72,7 +72,7 @@ namespace TaskManager.Pages.Forms
 			DataBaseContext.User.Add(user);
 			DataBaseContext.SaveChanges();
 
-			NavigationService.Navigate(new MainPage(ref DataBaseContext, 1));
+			NavigationService.Navigate(new MainPage(ref DataBaseContext, user));
 		}
 
 		private void AuthButton_Click(object sender, RoutedEventArgs e)

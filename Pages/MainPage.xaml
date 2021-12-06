@@ -11,6 +11,14 @@
       Title="MainPage"
       Style="{StaticResource WinStyle}">
 
+    <Page.Resources>
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="10"/>
+
+        </Style>
+
+    </Page.Resources>
+
     <Grid>
 
         <Grid.RowDefinitions>
@@ -18,10 +26,48 @@
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
-        <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Grid.Row="0"/>
-        <UniformGrid Columns="3" Grid.Row="0">
-            <TextBlock x:Name="UserName" Grid.Column="0"/>
-        </UniformGrid>
+        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="0,0,0,1"/>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock FontSize="28"
+                       Text="Task Manager" 
+                       Padding="5" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Center"/>
+
+            <ComboBox Grid.Column="1" 
+                      Width="200" 
+                      HorizontalAlignment="Right" 
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center">
+
+                <ComboBoxItem IsSelected="True" Padding="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" 
+                               x:Name="UserAvatar" 
+                               Width="36"
+                               HorizontalAlignment="Left" />
+                        <TextBlock Grid.Column="1" 
+                                   x:Name="UserName" 
+                                   Margin="10,0" 
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </ComboBoxItem>
+
+                <ComboBoxItem Content="Profile"/>
+                <ComboBoxItem Content="Settings"/>
+                <ComboBoxItem Content="Exit"/>
+
+            </ComboBox>
+        </Grid>
 
         <Frame x:Name="WorkSpaceFrame" NavigationUIVisibility="Hidden" Grid.Row="1"/>
 
