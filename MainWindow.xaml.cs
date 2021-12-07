@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TaskManager.DataBase;
+using TaskManager.Pages;
 using TaskManager.Pages.Forms;
 
 namespace TaskManager
@@ -27,7 +28,10 @@ namespace TaskManager
 		public MainWindow()
 		{
 			InitializeComponent();
-			MainFrame.Navigate(new AuthForm(ref DataBaseContext));
+			//MainFrame.Navigate(new AuthForm(ref DataBaseContext));
+
+			MainFrame.Navigate(new MainPage(ref DataBaseContext, DataBaseContext.User.Find(8)));
+
 		}
 
 		private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -32,23 +32,34 @@ namespace TaskManager.Pages
 			this.DataBaseContext = DataBaseContext;
 			this.user = user;
 
-			UserName.Text = "Task Manager " + user.id;
-			UserAvatar.Source = BytesToImage(user.avatar);
+			//UserName.Text = "Task Manager " + user.id;
+			//UserAvatar.Source = BytesToImage(user.avatar);
 			WorkSpaceFrame.Navigate(new ProjectsPage(ref DataBaseContext));
 		}
 
-		private BitmapImage BytesToImage(byte[] bytes)
+		private void PageMenu_DataContextChanged(object sender, SelectionChangedEventArgs e)
 		{
-			using (MemoryStream ms = new MemoryStream(bytes))
-			{
-				ms.Position = 0;
-				BitmapImage image = new BitmapImage();
-				image.BeginInit();
-				image.StreamSource = ms;
-				image.CacheOption = BitmapCacheOption.OnLoad;
-				image.EndInit();
+			ComboBox comboBox = sender as ComboBox;
+			ComboBoxItem item = comboBox.SelectedItem as ComboBoxItem;
+			string action = item.Tag.ToString();
 
-				return image;
+			switch (action)
+			{
+				case "Projects":
+					WorkSpaceFrame.Navigate(new ProjectsPage(ref DataBaseContext));
+					break;
+
+				case "Profile":
+					WorkSpaceFrame.Navigate(new ProfilePage(ref DataBaseContext));
+					break;
+
+				case "Exit":
+					MessageBox.Show("Test");
+					Application.Current.Shutdown();
+					break;
+
+				default:
+					break;
 			}
 		}
 	}

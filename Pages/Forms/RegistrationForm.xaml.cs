@@ -17,6 +17,7 @@ using TaskManager.DataBase;
 using ImageGenerator;
 using System.IO;
 using System.Drawing.Imaging;
+using TaskManager.Utils;
 
 namespace TaskManager.Pages.Forms
 {
@@ -54,25 +55,18 @@ namespace TaskManager.Pages.Forms
 			}
 
 			Bitmap avatar = Generator.ResizeImage(Generator.GenerateImage(), 256, 256);
-			byte[] avatarBytes;
-
-			using (MemoryStream ms = new MemoryStream())
-			{
-				avatar.Save(ms, ImageFormat.Png);
-				avatarBytes = ms.ToArray();
-			}
 
 			User user = new User()
 			{
 				login = login,
 				password = password,
-				avatar = avatarBytes,
+				avatar = ImageConvertor.BitmapToBytes(avatar),
 			};
 
-			DataBaseContext.User.Add(user);
+			User newUser = DataBaseContext.User.Add(user);
 			DataBaseContext.SaveChanges();
 
-			NavigationService.Navigate(new MainPage(ref DataBaseContext, user));
+			NavigationService.Navigate(new MainPage(ref DataBaseContext, newUser));
 		}
 
 		private void AuthButton_Click(object sender, RoutedEventArgs e)

@@ -43,9 +43,10 @@
                       Width="200" 
                       HorizontalAlignment="Right" 
                       HorizontalContentAlignment="Center"
-                      VerticalContentAlignment="Center">
+                      VerticalContentAlignment="Center"
+                      SelectionChanged="PageMenu_DataContextChanged">
 
-                <ComboBoxItem IsSelected="True" Padding="0">
+                <!--<ComboBoxItem IsSelected="True" Padding="0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40"/>
@@ -60,11 +61,12 @@
                                    Margin="10,0" 
                                    VerticalAlignment="Center"/>
                     </Grid>
-                </ComboBoxItem>
+                </ComboBoxItem>-->
 
-                <ComboBoxItem Content="Profile"/>
-                <ComboBoxItem Content="Settings"/>
-                <ComboBoxItem Content="Exit"/>
+                <ComboBoxItem Content="Projects" Tag="projects" IsSelected="True"/>
+                <ComboBoxItem Content="Profile" Tag="Profile"/>
+                <ComboBoxItem Content="Settings" Tag="Settings"/>
+                <ComboBoxItem Content="Exit" Tag="Exit"/>
 
             </ComboBox>
         </Grid>
