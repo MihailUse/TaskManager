@@ -11,15 +11,51 @@
       Style="{StaticResource WinStyle}">
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Frame x:Name="WorkSpaceFrame" NavigationUIVisibility="Hidden" Grid.Row="0"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="1">
+        <ListBox
+            x:Name="ProjectsList"
+            Grid.Row="0"
+            Grid.Column="0">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Path=logo}" Width="32"/>
+                        <TextBlock Text="{Binding Path=name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <ListBox
+            x:Name="TaskList"
+            Grid.Row="0"
+            Grid.Column="1"
+            Grid.ColumnSpan="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Path=logo}" Width="32"/>
+                        <TextBlock Text="{Binding Path=name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock 
+            Grid.Row="1"
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center">
             <Hyperlink Click="CreateProjectButton_Click">Create Project</Hyperlink>
         </TextBlock>
 

@@ -13,71 +13,79 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TaskManager.DataBase;
 using ImageGenerator;
 using System.IO;
 using System.Drawing.Imaging;
 using TaskManager.Utils;
+using TaskManager.Windows;
+using TaskManager.DataBase;
+using TaskManager.Pages.Layouts;
 
 namespace TaskManager.Pages.Forms
 {
-	/// <summary>
-	/// Логика взаимодействия для RegistrationForm.xaml
-	/// </summary>
-	public partial class RegistrationForm : Page
-	{
-		private TaskManagerEntities DataBaseContext;
+    /// <summary>
+    /// Логика взаимодействия для RegistrationForm.xaml
+    /// </summary>
+    public partial class RegistrationForm : Page
+    {
+        public RegistrationForm()
+        {
+            InitializeComponent();
+        }
 
-		public RegistrationForm(ref TaskManagerEntities DataBaseContext)
-		{
-			InitializeComponent();
-			this.DataBaseContext = DataBaseContext;
-		}
+        private void RegistrationButton_Click(object sender, RoutedEventArgs e)
+        {
+            string login = LoginField.Text.Trim();
+            string password = PasswordField.Text.Trim();
+            string repeatPassword = PasswordRepeatField.Text.Trim();
 
-		private void RegistrationButton_Click(object sender, RoutedEventArgs e)
-		{
-			string login = LoginField.Text.Trim();
-			string password = PasswordField.Text.Trim();
-			string repeatPassword = PasswordRepeatField.Text.Trim();
+            if (!password.Equals(repeatPassword))
+            {
+                ShowError("Password mismatch");
+                return;
+            }
 
-			if (!password.Equals(repeatPassword))
-			{
-				ShowError("Password mismatch");
-				return;
-			}
+            // check if user already exists
+            int existUsers = FrameManager.DataBaseContext.User.Where(x => x.login.Equals(login)).Count();
+            if (existUsers != 0)
+            {
+                ShowError("This login already exists");
+                return;
+            }
 
-			int existUsers = DataBaseContext.User.Where(x => x.login.Equals(login)).Count();
+            // create new user
+            Bitmap avatar = Generator.ResizeImage(Generator.GenerateImage(), 256, 256);
+            User user = new User()
+            {
+                login = login,
+                password = password,
+                avatar = ImageConvertor.BitmapToBytes(avatar),
+            };
 
-			if (existUsers != 0)
-			{
-				ShowError("This login already exists");
-				return;
-			}
+            User newUser = FrameManager.DataBaseContext.User.Add(user);
+            try
+            {
+                FrameManager.DataBaseContext.SaveChanges();
+            }
+            catch (Exception error)
+            {
+                ShowError($"Internal error: {error}");
+                return;
+            }
 
-			Bitmap avatar = Generator.ResizeImage(Generator.GenerateImage(), 256, 256);
+            FrameManager.User = newUser;
+            FrameManager.MainFrame.Navigate(new MainPage());
+        }
 
-			User user = new User()
-			{
-				login = login,
-				password = password,
-				avatar = ImageConvertor.BitmapToBytes(avatar),
-			};
+        private void AuthButton_Click(object sender, RoutedEventArgs e)
+        {
+            FrameManager.MainFrame.Navigate(new AuthForm());
+        }
 
-			User newUser = DataBaseContext.User.Add(user);
-			DataBaseContext.SaveChanges();
-
-			NavigationService.Navigate(new MainPage(ref DataBaseContext, newUser));
-		}
-
-		private void AuthButton_Click(object sender, RoutedEventArgs e)
-		{
-			NavigationService.Navigate(new AuthForm(ref DataBaseContext));
-		}
-
-		private void ShowError(string error)
-		{
-			ErrorField.Visibility = Visibility.Visible;
-			ErrorField.Text = error;
-		}
-	}
+        private void ShowError(string error)
+        {
+            ErrorField.Visibility = Visibility.Visible;
+            ErrorField.Text = error;
+        }
+    }
 }

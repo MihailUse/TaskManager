@@ -13,27 +13,29 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TaskManager.DataBase;
+using TaskManager.Pages.Forms;
+using TaskManager.Windows;
 
 namespace TaskManager.Pages
 {
-	/// <summary>
-	/// Логика взаимодействия для ProfilePage.xaml
-	/// </summary>
-	public partial class ProfilePage : Page
-	{
-		private TaskManagerEntities DataBaseContext;
-		private User user;
+    /// <summary>
+    /// Логика взаимодействия для ProfilePage.xaml
+    /// </summary>
+    public partial class ProfilePage : Page
+    {
+        public ProfilePage()
+        {
+            InitializeComponent();
 
-		public ProfilePage(ref TaskManagerEntities DataBaseContext, int userId)
-		{
-			InitializeComponent();
-			this.DataBaseContext = DataBaseContext;
-			this.user = DataBaseContext.User.Find(userId);
+            this.DataContext = FrameManager.User;
 
+            //UserName.Text = "Task Manager " + user.id;
+            //UserAvatar.Source = BytesToImage(user.avatar);
+        }
 
-
-			//UserName.Text = "Task Manager " + user.id;
-			//UserAvatar.Source = BytesToImage(user.avatar);
-		}
-	}
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            FrameManager.WorkSpaceFrame.Navigate(new ProfileForm());
+        }
+    }
 }

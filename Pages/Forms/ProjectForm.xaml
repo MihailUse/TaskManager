@@ -1,0 +1,66 @@
+﻿<Page x:Class="TaskManager.Pages.Forms.ProjectForm"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TaskManager.Pages.Forms"
+      mc:Ignorable="d" 
+      
+      d:DesignHeight="450" 
+      d:DesignWidth="800"
+      Title="Registration"
+      Style="{StaticResource FormStyle}">
+
+    <StackPanel 
+        MinWidth="250"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
+
+        <TextBlock 
+            x:Name="ErrorField"
+            Margin="0,0,0,15" 
+            Foreground="Red" 
+            TextWrapping="Wrap" 
+            Visibility="Collapsed"/>
+
+        <TextBlock Text="Name"/>
+        <TextBox x:Name="NameField"/>
+
+        <TextBlock Text="Description"/>
+        <TextBox x:Name="DescriptionField"/>
+
+        <TextBlock Text="Logo"/>
+        <Button Content="Select file" Click="SelectLogoButton_Click"/>
+
+        <Button Content="Invate MemberShip" Margin="0 15 0 0" Click="SelectLogoButton_Click"/>
+        <ListBox
+            x:Name="MembershipList"
+            MinHeight="60"
+            Margin="0 0 0 15">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding Path=avatar}" Height="24" Margin="8 2"/>
+                        <TextBlock
+                            FontSize="16" 
+                            VerticalAlignment="Center"
+                            Text="{Binding Path=login}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button 
+            x:Name="CreateButton"
+            Content="Create project"
+            Visibility="Collapsed"
+            Click="CreateProjectButton_Click"/>
+
+        <Button
+            x:Name="SaveButton"
+            Content="Save changes"
+            Visibility="Collapsed"
+            Click="SaveProjectButton_Click"/>
+
+    </StackPanel>
+</Page>

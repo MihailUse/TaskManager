@@ -9,20 +9,19 @@
       d:DesignHeight="450" 
       d:DesignWidth="800"
       Title="Registration"
-      Style="{StaticResource WinStyle}">
+      Style="{StaticResource FormStyle}">
 
-    <Page.Resources>
-        <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,2,0,10" />
-        </Style>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14" />
-        </Style>
-    </Page.Resources>
+    <StackPanel 
+        MinWidth="250"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="250">
-        <TextBlock x:Name="ErrorField" Margin="0,0,0,15" Foreground="Red" TextWrapping="Wrap" Visibility="Collapsed"/>
+        <TextBlock 
+            x:Name="ErrorField"
+            Margin="0,0,0,15" 
+            Foreground="Red" 
+            TextWrapping="Wrap" 
+            Visibility="Collapsed"/>
 
         <TextBlock Text="Login"/>
         <TextBox x:Name="LoginField"/>
@@ -33,7 +32,7 @@
         <TextBlock Text="Repeat password"/>
         <TextBox x:Name="PasswordRepeatField"/>
 
-        <Button Click="RegistrationButton_Click">Sign up</Button>
+        <Button Content="Sign up" Click="RegistrationButton_Click"/>
         <TextBlock HorizontalAlignment="Center" FontSize="13">
             already registered? <Hyperlink Click="AuthButton_Click">Sign in</Hyperlink>
         </TextBlock>

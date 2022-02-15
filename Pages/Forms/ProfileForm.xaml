@@ -1,4 +1,4 @@
-﻿<Page x:Class="TaskManager.Pages.Forms.AuthForm"
+﻿<Page x:Class="TaskManager.Pages.Forms.ProfileForm"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,14 +8,15 @@
       
       d:DesignHeight="450" 
       d:DesignWidth="800"
-      Title="Authentication"
+      Title="Edit profile form"
+      DataContext="{Binding Path=currentUser}"
       Style="{StaticResource FormStyle}">
 
     <StackPanel 
         HorizontalAlignment="Center" 
         VerticalAlignment="Center" 
         MinWidth="250">
-        
+
         <TextBlock 
             x:Name="ErrorField" 
             Margin="0,0,0,15" 
@@ -23,20 +24,19 @@
             TextWrapping="Wrap" 
             Visibility="Collapsed"/>
 
-        <TextBlock Text="Login"/>
-        <TextBox x:Name="LoginField"/>
+        <Image x:Name="Avatar" Source="{Binding Path=avatar}" MaxWidth="250" MaxHeight="250"/>
+        <Button Content="Select file" Click="SelectAvatarButton_Click"/>
 
-        <TextBlock Text="Password"/>
-        <TextBox x:Name="PasswordField"/>
+        <TextBlock Text="Login"/>
+        <TextBox x:Name="LoginField" Text="{Binding Path=login}"/>
+
+        <TextBlock Text="About"/>
+        <TextBox x:Name="DescriptionField" Text="{Binding Path=about}"/>
 
         <Button 
-            Content="Sign in"
+            Content="Save changes"
             FontSize="15"
             Padding="2"
-            Click="AuthButton_Click"/>
-        
-        <TextBlock HorizontalAlignment="Center">
-            not registered? <Hyperlink Click="RegistrationButton_Click">Sign up</Hyperlink>
-        </TextBlock>
+            Click="SaveButton_Click"/>
     </StackPanel>
 </Page>

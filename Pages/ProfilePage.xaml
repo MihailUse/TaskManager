@@ -13,19 +13,25 @@
 
     <Page.Resources>
         <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,15,0,10" />
+            <Setter Property="FontSize" Value="14" />
         </Style>
     </Page.Resources>
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="250">
-        <Image x:Name="UserAvatar" MaxWidth="250" MaxHeight="250"/>
+        <Image x:Name="Avatar" Source="{Binding Path=avatar}" MaxWidth="250" MaxHeight="250"/>
 
-        <Button Content="Upload image"/>
+        <TextBlock Text="Login"/>
+        <TextBlock Margin="0" Text="{Binding Path=login}"/>
 
-        <TextBlock x:Name="Login" Text="Login"/>
-        <TextBlock x:Name="About" Text="About"/>
+        <TextBlock Text="About"/>
+        <TextBlock Margin="0" Text="{Binding Path=description}"/>
 
-        <Button Content="Edit" Click="AuthButton_Click"/>
+        <TextBlock Text="Created at"/>
+        <TextBlock Margin="0" Text="{Binding Path=createdAt}"/>
+
+        <TextBlock Text="Upadated at"/>
+        <TextBlock Margin="0" Text="{Binding Path=upadatedAt}"/>
+
+        <Button Content="Edit" Click="EditButton_Click"/>
     </StackPanel>
 </Page>

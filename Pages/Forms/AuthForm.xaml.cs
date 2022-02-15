@@ -13,53 +13,53 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TaskManager.DataBase;
+using TaskManager.Pages.Layouts;
+using TaskManager.Windows;
 
 namespace TaskManager.Pages.Forms
 {
-	/// <summary>
-	/// Логика взаимодействия для AuthForm.xaml
-	/// </summary>
-	public partial class AuthForm : Page
-	{
-		private TaskManagerEntities DataBaseContext;
+    /// <summary>
+    /// Логика взаимодействия для AuthForm.xaml
+    /// </summary>
+    public partial class AuthForm : Page
+    {
+        public AuthForm()
+        {
+            InitializeComponent();
+        }
 
-		public AuthForm(ref TaskManagerEntities DataBaseContext)
-		{
-			InitializeComponent();
-			this.DataBaseContext = DataBaseContext;
-		}
+        private void AuthButton_Click(object sender, RoutedEventArgs e)
+        {
+            string login = LoginField.Text.Trim();
+            string password = PasswordField.Text.Trim();
 
-		private void AuthButton_Click(object sender, RoutedEventArgs e)
-		{
-			string login = LoginField.Text.Trim();
-			string password = PasswordField.Text.Trim();
+            User user = FrameManager.DataBaseContext.User.Where(x => x.login.Equals(login)).FirstOrDefault();
 
-			User user = DataBaseContext.User.Where(x => x.login.Equals(login)).FirstOrDefault();
+            if (user == null)
+            {
+                ShowError("Wrong login");
+                return;
+            }
 
-			if (user == null)
-			{
-				ShowError("Wrong login");
-				return;
-			}
+            if (!user.password.Equals(password))
+            {
+                ShowError("Wrong password");
+                return;
+            }
 
-			if (!user.password.Equals(password))
-			{
-				ShowError("Wrong password");
-				return;
-			}
+            FrameManager.User = user;
+            FrameManager.MainFrame.Navigate(new MainPage());
+        }
 
-			NavigationService.Navigate(new MainPage(ref DataBaseContext, user));
-		}
+        private void RegistrationButton_Click(object sender, RoutedEventArgs e)
+        {
+            FrameManager.MainFrame.Navigate(new RegistrationForm());
+        }
 
-		private void RegistrationButton_Click(object sender, RoutedEventArgs e)
-		{
-			NavigationService.Navigate(new RegistrationForm(ref DataBaseContext));
-		}
-
-		private void ShowError(string error)
-		{
-			ErrorField.Visibility = Visibility.Visible;
-			ErrorField.Text = error;
-		}
-	}
+        private void ShowError(string error)
+        {
+            ErrorField.Visibility = Visibility.Visible;
+            ErrorField.Text = error;
+        }
+    }
 }
