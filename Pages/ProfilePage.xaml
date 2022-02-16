@@ -20,16 +20,16 @@
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="250">
         <Image x:Name="Avatar" Source="{Binding Path=avatar}" MaxWidth="250" MaxHeight="250"/>
 
-        <TextBlock Text="Login"/>
+        <TextBlock Text="Login" Margin="0 15 0 0"/>
         <TextBlock Margin="0" Text="{Binding Path=login}"/>
 
-        <TextBlock Text="About"/>
-        <TextBlock Margin="0" Text="{Binding Path=description}"/>
+        <TextBlock Text="About" Margin="0 15 0 0"/>
+        <TextBlock Margin="0" Text="{Binding Path=about}"/>
 
-        <TextBlock Text="Created at"/>
+        <TextBlock Text="Created at" Margin="0 15 0 0"/>
         <TextBlock Margin="0" Text="{Binding Path=createdAt}"/>
 
-        <TextBlock Text="Upadated at"/>
+        <TextBlock Text="Upadated at" Margin="0 15 0 0"/>
         <TextBlock Margin="0" Text="{Binding Path=upadatedAt}"/>
 
         <Button Content="Edit" Click="EditButton_Click"/>
