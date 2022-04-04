@@ -28,7 +28,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="description" Type="varchar(max)" />
           <Property Name="logo" Type="varbinary(max)" />
           <Property Name="createdAt" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="updatedAt" Type="datetime2" Precision="7" />
@@ -40,7 +40,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="description" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -65,7 +65,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="title" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="description" Type="varchar(max)" />
           <Property Name="project_id" Type="int" Nullable="false" />
           <Property Name="status_id" Type="int" Nullable="false" />
           <Property Name="createdAt" Type="datetime2" Precision="7" Nullable="false" />
@@ -79,7 +79,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="login" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="password" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="about" Type="nvarchar(max)" />
+          <Property Name="about" Type="varchar(max)" />
           <Property Name="avatar" Type="varbinary(max)" />
           <Property Name="createdAt" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="updatedAt" Type="datetime2" Precision="7" />
@@ -240,7 +240,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="logo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="detetedAt" Type="DateTime" Precision="7" />
@@ -254,7 +254,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Membership" Relationship="Self.FK_Membership_Role" FromRole="Role" ToRole="Membership" />
         </EntityType>
         <EntityType Name="Status">
@@ -281,7 +281,7 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="title" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="project_id" Type="Int32" Nullable="false" />
           <Property Name="status_id" Type="Int32" Nullable="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="7" />
@@ -298,7 +298,7 @@
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="login" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="about" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="about" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="avatar" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="createdAt" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="updatedAt" Type="DateTime" Precision="7" />
