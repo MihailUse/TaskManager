@@ -34,14 +34,16 @@ namespace TaskManager.Pages.Forms
             }
 
             #region validation
-            if (login.Length < 3 && login.Length > 256)
+            if (login.Length < 3 || login.Length > 256)
             {
                 ShowError("login cannot contain less than 3 and more than 256 characters");
+                return;
             }
 
-            if (password.Length < 4 && password.Length > 256)
+            if (password.Length < 5 || password.Length > 256)
             {
                 ShowError("password cannot contain less than 3 and more than 256 characters");
+                return;
             }
             #endregion
 

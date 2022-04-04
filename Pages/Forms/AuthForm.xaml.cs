@@ -34,6 +34,20 @@ namespace TaskManager.Pages.Forms
             string login = LoginField.Text.Trim();
             string password = PasswordField.Text.Trim();
 
+            #region validation
+            if (login.Length < 3 || login.Length > 256)
+            {
+                ShowError("login cannot contain less than 3 and more than 256 characters");
+                return;
+            }
+
+            if (password.Length < 4 || password.Length > 256)
+            {
+                ShowError("password cannot contain less than 3 and more than 256 characters");
+                return;
+            }
+            #endregion
+
             User user = FrameManager.DataBaseContext.User
                 .Where(x => x.login.Equals(login) && !x.detetedAt.HasValue)
                 .FirstOrDefault();

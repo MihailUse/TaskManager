@@ -12,7 +12,7 @@
       Style="{StaticResource FormStyle}">
 
     <StackPanel 
-        MinWidth="250"
+        Width="300"
         HorizontalAlignment="Center"
         VerticalAlignment="Center">
 
