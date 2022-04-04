@@ -4,30 +4,30 @@ using System.Runtime.InteropServices;
 
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
-// связанные с этой сборкой.
-[assembly: AssemblyTitle("ImageGenerator")]
+// связанные со сборкой.
+[assembly: AssemblyTitle("ImageLibrary")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ImageGenerator")]
-[assembly: AssemblyCopyright("Copyright ©  2021")]
+[assembly: AssemblyProduct("ImageLibrary")]
+[assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
 // для компонентов COM. Если необходимо обратиться к типу в этой сборке через
-// из модели COM задайте для атрибута ComVisible этого типа значение true.
+// COM, задайте атрибуту ComVisible значение TRUE для этого типа.
 [assembly: ComVisible(false)]
 
-// Следующий GUID представляет идентификатор typelib, если этот проект доступен из модели COM
-[assembly: Guid("a69e4413-2e23-450b-b4aa-5224df004929")]
+// Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
+[assembly: Guid("52298586-59c5-4e4b-8b27-211e0f52f961")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
 //      Основной номер версии
 //      Дополнительный номер версии
 //      Номер сборки
-//      Номер редакции
+//      Редакция
 //
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:

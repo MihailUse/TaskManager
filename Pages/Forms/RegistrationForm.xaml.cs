@@ -1,25 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using ImageGenerator;
-using System.IO;
-using System.Drawing.Imaging;
-using TaskManager.Utils;
 using TaskManager.Windows;
 using TaskManager.DataBase;
 using TaskManager.Pages.Layouts;
+using ImageLibrary;
+using System.Drawing;
+using Isopoh.Cryptography.Argon2;
 
 namespace TaskManager.Pages.Forms
 {
@@ -45,20 +33,38 @@ namespace TaskManager.Pages.Forms
                 return;
             }
 
+            #region validation
+            if (login.Length < 3 && login.Length > 256)
+            {
+                ShowError("login cannot contain less than 3 and more than 256 characters");
+            }
+
+            if (password.Length < 4 && password.Length > 256)
+            {
+                ShowError("password cannot contain less than 3 and more than 256 characters");
+            }
+            #endregion
+
             // check if user already exists
-            int existUsers = FrameManager.DataBaseContext.User.Where(x => x.login.Equals(login)).Count();
-            if (existUsers != 0)
+            var existsUser = FrameManager.DataBaseContext.User
+                .Where(x => x.login.Equals(login) && !x.detetedAt.HasValue)
+                .FirstOrDefault();
+
+            if (existsUser != null)
             {
                 ShowError("This login already exists");
                 return;
             }
 
+            // generate password hash
+            string passwordHash = Argon2.Hash(password, timeCost: 10, parallelism: Environment.ProcessorCount, hashLength: 128);
+
             // create new user
-            Bitmap avatar = Generator.ResizeImage(Generator.GenerateImage(), 256, 256);
+            Bitmap avatar = ImageConvertor.ResizeImage(ImageGenerator.GenerateImage(), 256, 256);
             User user = new User()
             {
                 login = login,
-                password = password,
+                password = passwordHash,
                 avatar = ImageConvertor.BitmapToBytes(avatar),
             };
 

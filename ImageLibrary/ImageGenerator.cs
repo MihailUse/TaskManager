@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace ImageGenerator
+namespace ImageLibrary
 {
-	public class Generator
+	public class ImageGenerator
 	{
 		static Random rand = new Random();
 
@@ -40,7 +40,8 @@ namespace ImageGenerator
 			return image;
 		}
 
-		public static Color[] GenerateColors(int countColor)
+		// generage array with random colors 
+		private static Color[] GenerateColors(int countColor)
 		{
 			Color[] colors = new Color[countColor];
 
@@ -54,18 +55,6 @@ namespace ImageGenerator
 			}
 
 			return colors;
-		}
-
-		public static Bitmap ResizeImage(Bitmap image, int height, int width)
-		{
-			Bitmap resultImage = new Bitmap(width, height);
-			Graphics g = Graphics.FromImage((Image)resultImage);
-
-			g.PixelOffsetMode = PixelOffsetMode.Half;
-			g.InterpolationMode = InterpolationMode.NearestNeighbor;
-			g.DrawImage((Image)image, 0, 0, width, height);
-
-			return new Bitmap(resultImage);
 		}
 	}
 }

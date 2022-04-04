@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31829.152
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager", "TaskManager.csproj", "{3DE05346-3A52-4F82-B9D9-FED933C91F19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageGenerator", "ImageGenerator\ImageGenerator.csproj", "{A69E4413-2E23-450B-B4AA-5224DF004929}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageLibrary", "ImageLibrary\ImageLibrary.csproj", "{52298586-59C5-4E4B-8B27-211E0F52F961}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{3DE05346-3A52-4F82-B9D9-FED933C91F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DE05346-3A52-4F82-B9D9-FED933C91F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DE05346-3A52-4F82-B9D9-FED933C91F19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A69E4413-2E23-450B-B4AA-5224DF004929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A69E4413-2E23-450B-B4AA-5224DF004929}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A69E4413-2E23-450B-B4AA-5224DF004929}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A69E4413-2E23-450B-B4AA-5224DF004929}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52298586-59C5-4E4B-8B27-211E0F52F961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52298586-59C5-4E4B-8B27-211E0F52F961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52298586-59C5-4E4B-8B27-211E0F52F961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52298586-59C5-4E4B-8B27-211E0F52F961}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

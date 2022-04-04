@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Isopoh.Cryptography.Argon2;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,9 @@ namespace TaskManager.Pages.Forms
             string login = LoginField.Text.Trim();
             string password = PasswordField.Text.Trim();
 
-            User user = FrameManager.DataBaseContext.User.Where(x => x.login.Equals(login)).FirstOrDefault();
+            User user = FrameManager.DataBaseContext.User
+                .Where(x => x.login.Equals(login) && !x.detetedAt.HasValue)
+                .FirstOrDefault();
 
             if (user == null)
             {
@@ -41,14 +44,15 @@ namespace TaskManager.Pages.Forms
                 return;
             }
 
-            if (!user.password.Equals(password))
+            if (Argon2.Verify(user.password, password))
             {
-                ShowError("Wrong password");
+                FrameManager.User = user;
+                FrameManager.MainFrame.Navigate(new MainPage());
                 return;
             }
 
-            FrameManager.User = user;
-            FrameManager.MainFrame.Navigate(new MainPage());
+            ShowError("Wrong password");
+            return;
         }
 
         private void RegistrationButton_Click(object sender, RoutedEventArgs e)
