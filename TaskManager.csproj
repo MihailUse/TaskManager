@@ -118,6 +118,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ImageConverter.cs" />
     <Compile Include="Pages\Forms\ProfileForm.xaml.cs">
       <DependentUpon>ProfileForm.xaml</DependentUpon>
     </Compile>
@@ -263,6 +264,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\CancelButton.png" />
     <Content Include="DataBase\DataBaseModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DataBaseModel.Context.cs</LastGenOutput>
@@ -283,6 +285,8 @@
       <Name>ImageLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

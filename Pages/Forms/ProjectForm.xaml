@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TaskManager.Pages.Forms"
+      xmlns:Converters="clr-namespace:TaskManager.Converters"
       mc:Ignorable="d" 
       
       d:DesignHeight="450" 
@@ -15,6 +16,10 @@
         MinWidth="250"
         HorizontalAlignment="Center"
         VerticalAlignment="Center">
+
+        <StackPanel.Resources>
+            <Converters:ImageConverter x:Key="ImageConverterKey"/>
+        </StackPanel.Resources>
 
         <TextBlock 
             x:Name="ErrorField"
@@ -30,37 +35,72 @@
         <TextBox x:Name="DescriptionField"/>
 
         <TextBlock Text="Logo"/>
-        <Button Content="Select file" Click="SelectLogoButton_Click"/>
+        <Image x:Name="ProjectImage"/>
+        <Button Content="Select file" Margin="0,2,0,10" Click="SelectLogoButton_Click"/>
 
-        <Button Content="Invate MemberShip" Margin="0 15 0 0" Click="SelectLogoButton_Click"/>
-        <ListBox
-            x:Name="MembershipList"
-            MinHeight="60"
-            Margin="0 0 0 15">
-            <ListBox.ItemTemplate>
+        <TextBlock Text="Login membership"/>
+        <ComboBox 
+            x:Name="MembershipComboBox"
+            IsEditable="True"
+            KeyUp="MembershipComboBox_KeyUp"
+            PreviewTextInput="MembershipField_TextInput"
+            SelectionChanged="MembershipComboBox_Selected">
+            <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=avatar}" Height="24" Margin="8 2"/>
+                        <Image 
+                            Source="{Binding Path=avatar, Converter={StaticResource ImageConverterKey}}" 
+                            Height="24" 
+                            Margin="8 2"/>
                         <TextBlock
                             FontSize="16" 
                             VerticalAlignment="Center"
                             Text="{Binding Path=login}"/>
                     </StackPanel>
                 </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        
+        <ListBox
+            x:Name="MembershipListBox"
+            MinHeight="20">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Width="250" LastChildFill="False">
+                        <Image 
+                            DockPanel.Dock="Left"
+                            Source="{Binding Path=avatar, Converter={StaticResource ImageConverterKey}}" 
+                            Height="24" 
+                            Margin="0 2 10 2"/>
+                        <TextBlock
+                            FontSize="16" 
+                            VerticalAlignment="Center"
+                            Text="{Binding Path=login}"/>
+                        <Image 
+                            Height="24"
+                            DockPanel.Dock="Right"
+                            Tag="{Binding Path=id}"
+                            Margin="0 0 10 0"
+                            Source="../../Assets/CancelButton.png"
+                            MouseLeftButtonDown="RemoveMembershipButton_Click"/>
+                    </DockPanel>
+                </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button 
-            x:Name="CreateButton"
-            Content="Create project"
-            Visibility="Collapsed"
-            Click="CreateProjectButton_Click"/>
+        <UniformGrid Columns="2">
+            <Button 
+                x:Name="CreateButton"
+                Content="Cancel"
+                Click="BackButton_Click"
+                Margin="0 15 5 0"/>
 
-        <Button
-            x:Name="SaveButton"
-            Content="Save changes"
-            Visibility="Collapsed"
-            Click="SaveProjectButton_Click"/>
+            <Button
+                x:Name="SaveButton"
+                Margin="5 15 0 0"
+                Content="Save changes"
+                Click="SaveProjectButton_Click"/>
 
+        </UniformGrid>
     </StackPanel>
 </Page>

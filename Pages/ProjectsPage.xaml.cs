@@ -53,7 +53,7 @@ namespace TaskManager.Pages
 
         private void CreateProjectButton_Click(object sender, RoutedEventArgs e)
         {
-            FrameManager.WorkSpaceFrame.Navigate(new ProjectForm(isNewProject: true));
+            FrameManager.WorkSpaceFrame.Navigate(new ProjectForm());
         }
     }
 }
