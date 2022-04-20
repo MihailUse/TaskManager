@@ -44,7 +44,7 @@ namespace TaskManager.Pages.Forms
             InitializeComponent();
 
             this.MembershipComboBox.ItemsSource = SearchableList;
-            //this.MembershipListBox.ItemsSource = MembershipList;
+            this.MembershipListBox.ItemsSource = MembershipList;
 
             this.project = FrameManager.DataBaseContext.Project
                 .Include(x => x.Membership)
@@ -164,12 +164,17 @@ namespace TaskManager.Pages.Forms
             {
                 SearchableList.Clear();
 
+                // get ids list with selected users for exclude in search
+                List<int> membershipListIds = MembershipList
+                    .Select(x => x.id)
+                    .ToList();
+
                 // select users by login
                 List<User> users = FrameManager.DataBaseContext.User
                     .Where(x =>
                         DbFunctions.Like(x.login, likeExpression) &&
                         x.id != FrameManager.User.id &&
-//                        MembershipList.Contains(x) &&
+                        !membershipListIds.Contains(x.id) &&
                         x.detetedAt.HasValue == false
                     )
                     .ToList();
@@ -199,7 +204,7 @@ namespace TaskManager.Pages.Forms
         {
             Image button = sender as Image;
 
-            User user = FrameManager.DataBaseContext.User.Local
+            User user = MembershipList
                 .Where(x => x.id == int.Parse(button.Tag.ToString()))
                 .First();
 
