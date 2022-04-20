@@ -155,10 +155,13 @@ namespace TaskManager.Pages.Forms
             ErrorField.Text = error;
         }
 
+        // method for search users and display in searchable list
         private void MembershipField_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
             string userLogin = MembershipComboBox.Text.Trim();
             string likeExpression = $"%{userLogin}%";
+
+            ComboBox comboBox = sender as ComboBox;
 
             if (userLogin != String.Empty)
             {
@@ -179,7 +182,15 @@ namespace TaskManager.Pages.Forms
                     )
                     .ToList();
 
-                users.ForEach(x => SearchableList.Add(x));
+                if (users.Count > 0)
+                {
+                    comboBox.IsDropDownOpen = true;
+                    users.ForEach(x => SearchableList.Add(x));
+                }
+            }
+            else
+            {
+                comboBox.IsDropDownOpen = false;
             }
         }
 
@@ -213,8 +224,8 @@ namespace TaskManager.Pages.Forms
 
         private void MembershipComboBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            ComboBox comboBox = sender as ComboBox;
-            comboBox.IsDropDownOpen = true;
+            //ComboBox comboBox = sender as ComboBox;
+            //comboBox.IsDropDownOpen = true;
         }
     }
 }
