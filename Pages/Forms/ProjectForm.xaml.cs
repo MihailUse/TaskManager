@@ -6,6 +6,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +26,6 @@ namespace TaskManager.Pages.Forms
     public partial class ProjectForm : Page
     {
         private Project project;
-        private byte[] projectLogo;
         private ObservableCollection<User> SearchableList = new ObservableCollection<User>();
         private ObservableCollection<User> MembershipList = new ObservableCollection<User>();
 
@@ -35,7 +35,7 @@ namespace TaskManager.Pages.Forms
 
             this.MembershipComboBox.ItemsSource = SearchableList;
             this.MembershipListBox.ItemsSource = MembershipList;
-
+            this.project = new Project();
             this.SaveButton.Content = "Create project";
         }
 
@@ -53,9 +53,8 @@ namespace TaskManager.Pages.Forms
 
             this.NameField.Text = this.project.name;
             this.DescriptionField.Text = this.project.description;
-            this.projectLogo = this.project.logo;
 
-            LoadImage(this.projectLogo);
+            LoadImage(this.project.logo);
             this.SaveButton.Content = "Save project";
         }
 
@@ -68,8 +67,7 @@ namespace TaskManager.Pages.Forms
             if (openFileDialog.ShowDialog() == true)
             {
                 byte[] imageBytes = File.ReadAllBytes(openFileDialog.FileName);
-                this.projectLogo = imageBytes;
-
+                this.project.logo = imageBytes;
                 this.ProjectImage.Source = LoadImage(imageBytes);
             }
         }
@@ -88,6 +86,7 @@ namespace TaskManager.Pages.Forms
             }
         }
 
+        // method for save or create project with validation
         private void SaveProjectButton_Click(object sender, RoutedEventArgs e)
         {
             string name = NameField.Text.Trim();
@@ -105,33 +104,61 @@ namespace TaskManager.Pages.Forms
                 ShowError("description cannot contain more than 12000 characters");
                 return;
             }
+
+            Regex regex = new Regex(@"[^a-zа-я1-9|\s|_]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            if (regex.IsMatch(name))
+            {
+                ShowError("invalid name characters");
+                return;
+            }
+
+            Project existsProject = FrameManager.DataBaseContext.Project
+                .Where(x => x.name.Equals(name) && !x.detetedAt.HasValue)
+                .FirstOrDefault();
+
+            if (existsProject != null)
+            {
+                ShowError("This name already exists");
+                return;
+            }
             #endregion
 
-            // if project is null then it`s new project
-            if (this.project == null)
+            this.project.name = name;
+            this.project.description = description;
+
+            FrameManager.DataBaseContext.Project.Add(this.project);
+
+            try
             {
-                Project project = FrameManager.DataBaseContext.Project
-                    .Where(x => x.name.Equals(name) && !x.detetedAt.HasValue)
-                    .FirstOrDefault();
+                FrameManager.DataBaseContext.SaveChanges();
+            }
+            catch (Exception error)
+            {
+                ShowError($"Internal error: {error}");
+            }
 
-                if (project != null)
+            List<Membership> userIds = this.project.Membership
+                .ToList();
+
+            // remove exists memberships if they are not in MembershipList
+            foreach (Membership membership in userIds)
+            {
+                if (!MembershipList.Select(x => x.id).Contains(membership.user_id))
                 {
-                    ShowError("This name already exists");
-                    return;
+                    this.project.Membership.Remove(membership);
                 }
+            }
 
-                Project newProject = new Project()
+            // add new memberships to database
+            foreach (User user in MembershipList)
+            {
+                Membership newMembership = new Membership()
                 {
-                    name = name,
-                    description = description,
-                    logo = this.projectLogo,
+                    user_id = user.id,
+                    project_id = this.project.id,
                 };
 
-                FrameManager.DataBaseContext.Project.Add(newProject);
-            }
-            else
-            {
-
+                this.project.Membership.Add(newMembership);
             }
 
             try
@@ -155,6 +182,7 @@ namespace TaskManager.Pages.Forms
             ErrorField.Text = error;
         }
 
+        #region methods for search and select memberships  
         // method for search users and display in searchable list
         private void MembershipField_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
@@ -221,11 +249,6 @@ namespace TaskManager.Pages.Forms
 
             MembershipList.Remove(user);
         }
-
-        private void MembershipComboBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            //ComboBox comboBox = sender as ComboBox;
-            //comboBox.IsDropDownOpen = true;
-        }
+        #endregion
     }
 }

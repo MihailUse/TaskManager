@@ -8,6 +8,7 @@ using TaskManager.Pages.Layouts;
 using ImageLibrary;
 using System.Drawing;
 using Isopoh.Cryptography.Argon2;
+using System.Text.RegularExpressions;
 
 namespace TaskManager.Pages.Forms
 {
@@ -37,6 +38,13 @@ namespace TaskManager.Pages.Forms
             if (login.Length < 3 || login.Length > 256)
             {
                 ShowError("login cannot contain less than 3 and more than 256 characters");
+                return;
+            }
+
+            Regex regex = new Regex(@"[^a-zа-я1-9|\s|_]", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            if (regex.IsMatch(login))
+            {
+                ShowError("invalid login characters");
                 return;
             }
 

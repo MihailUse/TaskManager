@@ -42,7 +42,6 @@
         <ComboBox 
             x:Name="MembershipComboBox"
             IsEditable="True"
-            KeyUp="MembershipComboBox_KeyUp"
             PreviewTextInput="MembershipField_TextInput"
             SelectionChanged="MembershipComboBox_Selected">
             <ComboBox.ItemTemplate>
