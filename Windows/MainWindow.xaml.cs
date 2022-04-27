@@ -17,16 +17,14 @@ namespace TaskManager
             InitializeComponent();
             FrameManager.DataBaseContext = new TaskManagerEntities();
             FrameManager.MainFrame = this.MainFrame;
-            //FrameManager.MainFrame.Navigate(new AuthForm());
-           
-            User user = FrameManager.DataBaseContext.User
-                .Where(x => x.login.Equals("login") && !x.detetedAt.HasValue)
-                .FirstOrDefault();
+            FrameManager.MainFrame.Navigate(new AuthForm());
 
-            FrameManager.User = user;
-            FrameManager.MainFrame.Navigate(new MainPage());
+            //User user = FrameManager.DataBaseContext.User
+            //    .Where(x => x.login.Equals("login") && !x.detetedAt.HasValue)
+            //    .FirstOrDefault();
 
-            Closing += MainWindow_Closing;
+            //FrameManager.User = user;
+            //FrameManager.MainFrame.Navigate(new MainPage());
         }
 
         // close database on window closing

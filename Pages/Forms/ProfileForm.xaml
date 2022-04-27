@@ -9,14 +9,9 @@
       d:DesignHeight="450" 
       d:DesignWidth="800"
       Title="Edit profile form"
-      DataContext="{Binding Path=currentUser}"
       Style="{StaticResource FormStyle}">
 
-    <StackPanel 
-        HorizontalAlignment="Center" 
-        VerticalAlignment="Center" 
-        MinWidth="250">
-
+    <StackPanel>
         <TextBlock 
             x:Name="ErrorField" 
             Margin="0,0,0,15" 
@@ -27,14 +22,14 @@
         <Image x:Name="Avatar" Source="{Binding Path=avatar}" MaxWidth="250" MaxHeight="250"/>
         <Button Content="Select file" Click="SelectAvatarButton_Click"/>
 
-        <TextBlock Text="Login"/>
+        <Label Target="{Binding ElementName=LoginField}" Content="_Login"/>
         <TextBox x:Name="LoginField" Text="{Binding Path=login}"/>
 
-        <TextBlock Text="About"/>
+        <Label Target="{Binding ElementName=DescriptionField}" Content="_About"/>
         <TextBox x:Name="DescriptionField" Text="{Binding Path=about}"/>
 
         <Button 
-            Content="Save changes"
+            Content="_Save changes"
             FontSize="15"
             Padding="2"
             Click="SaveButton_Click"/>

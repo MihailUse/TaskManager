@@ -11,11 +11,7 @@
       Title="Registration"
       Style="{StaticResource FormStyle}">
 
-    <StackPanel 
-        Width="300"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center">
-
+    <StackPanel>
         <TextBlock 
             x:Name="ErrorField"
             Margin="0,0,0,15" 
@@ -23,16 +19,16 @@
             TextWrapping="Wrap" 
             Visibility="Collapsed"/>
 
-        <TextBlock Text="Login"/>
-        <TextBox x:Name="LoginField"/>
+        <Label Target="{Binding ElementName=LoginField}" Content="_Login"/>
+        <TextBox x:Name="LoginField" ToolTip="sdfdfdfsdfsdfsdfdsfsdfsdfsd"/>
 
-        <TextBlock Text="Password"/>
+        <Label Target="{Binding ElementName=PasswordField}" Content="_Password"/>
         <TextBox x:Name="PasswordField"/>
 
-        <TextBlock Text="Repeat password"/>
+        <Label Target="{Binding ElementName=PasswordRepeatField}" Content="_Repeat password"/>
         <TextBox x:Name="PasswordRepeatField"/>
 
-        <Button Content="Sign up" Click="RegistrationButton_Click"/>
+        <Button Content="_Sign up" Click="RegistrationButton_Click"/>
         <TextBlock HorizontalAlignment="Center" FontSize="13">
             already registered? <Hyperlink Click="AuthButton_Click">Sign in</Hyperlink>
         </TextBlock>

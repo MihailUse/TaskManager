@@ -11,11 +11,7 @@
       Title="Authentication"
       Style="{StaticResource FormStyle}">
 
-    <StackPanel 
-        HorizontalAlignment="Center" 
-        VerticalAlignment="Center" 
-        Width="300">
-        
+    <StackPanel>
         <TextBlock 
             x:Name="ErrorField" 
             Margin="0,0,0,15" 
@@ -23,14 +19,14 @@
             TextWrapping="Wrap" 
             Visibility="Collapsed"/>
 
-        <TextBlock Text="Login"/>
-        <TextBox x:Name="LoginField"/>
+        <Label Target="{Binding ElementName=LoginField}" Content="_Login"/>
+        <TextBox Name="LoginField"/>
 
-        <TextBlock Text="Password"/>
+        <Label Target="{Binding ElementName=PasswordField}" Content="_Password"/>
         <TextBox x:Name="PasswordField"/>
 
         <Button 
-            Content="Sign in"
+            Content="_Sign in"
             FontSize="15"
             Padding="2"
             Click="AuthButton_Click"/>

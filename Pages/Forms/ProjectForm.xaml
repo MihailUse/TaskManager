@@ -12,11 +12,7 @@
       Title="Registration"
       Style="{StaticResource FormStyle}">
 
-    <StackPanel 
-        MinWidth="250"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center">
-
+    <StackPanel>
         <StackPanel.Resources>
             <Converters:ImageConverter x:Key="ImageConverterKey"/>
         </StackPanel.Resources>
@@ -28,17 +24,17 @@
             TextWrapping="Wrap" 
             Visibility="Collapsed"/>
 
-        <TextBlock Text="Name"/>
+        <Label Target="{Binding ElementName=NameField}" Content="_Name"/>
         <TextBox x:Name="NameField"/>
 
-        <TextBlock Text="Description"/>
+        <Label Target="{Binding ElementName=DescriptionField}" Content="_Description"/>
         <TextBox x:Name="DescriptionField"/>
 
-        <TextBlock Text="Logo"/>
+        <Label Target="{Binding ElementName=ProjectImage}" Content="_Logo"/>
         <Image x:Name="ProjectImage"/>
-        <Button Content="Select file" Margin="0,2,0,10" Click="SelectLogoButton_Click"/>
+        <Button Content="_Select file" Margin="0,2,0,10" Click="SelectLogoButton_Click"/>
 
-        <TextBlock Text="Login membership"/>
+        <Label Target="{Binding ElementName=MembershipListBox}" Content="_Add memberships"/>
         <ComboBox 
             x:Name="MembershipComboBox"
             IsEditable="True"
@@ -89,15 +85,14 @@
 
         <UniformGrid Columns="2">
             <Button 
-                x:Name="CreateButton"
-                Content="Cancel"
+                Content="_Cancel"
                 Click="BackButton_Click"
                 Margin="0 15 5 0"/>
 
             <Button
                 x:Name="SaveButton"
                 Margin="5 15 0 0"
-                Content="Save changes"
+                Content="_Save changes"
                 Click="SaveProjectButton_Click"/>
 
         </UniformGrid>
