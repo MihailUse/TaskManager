@@ -28,7 +28,10 @@
         <TextBox x:Name="NameField"/>
 
         <Label Target="{Binding ElementName=DescriptionField}" Content="_Description"/>
-        <TextBox x:Name="DescriptionField"/>
+        <TextBox
+            x:Name="DescriptionField"
+            VerticalScrollBarVisibility="Auto"
+            TextWrapping="Wrap"/>
 
         <Label Target="{Binding ElementName=ProjectImage}" Content="_Logo"/>
         <Image x:Name="ProjectImage"/>
