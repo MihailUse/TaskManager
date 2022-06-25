@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Define some colors with brushes -->
+    <Color x:Key="ErrorColor">#D62E2E</Color>
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ResourceKey=ErrorColor}"/>
+
+    <Color x:Key="SelectedErrorColor">Red</Color>
+    <SolidColorBrush x:Key="SelectedErrorBrush" Color="{StaticResource ResourceKey=SelectedErrorColor}"/>
+
+    <Color x:Key="Dark800Color">#151419</Color>
+    <SolidColorBrush x:Key="Dark800Brush" Color="{StaticResource ResourceKey=Dark800Color}"/>
+
+    <Color x:Key="Dark700Color">#1E2026</Color>
+    <SolidColorBrush x:Key="Dark700Brush" Color="{StaticResource ResourceKey=Dark700Color}"/>
+
+    <Color x:Key="Dark600Color">#22242a</Color>
+    <SolidColorBrush x:Key="Dark600Brush" Color="{StaticResource ResourceKey=Dark600Color}"/>
+
+    <Color x:Key="Dark400Color">#303238</Color>
+    <SolidColorBrush x:Key="Dark400Brush" Color="{StaticResource ResourceKey=Dark400Color}"/>
+
+    <Color x:Key="Dark200Color">#4E4F54</Color>
+    <SolidColorBrush x:Key="Dark200Brush" Color="{StaticResource ResourceKey=Dark200Color}"/>
+
+    <Color x:Key="TextColor">#D7D7D8</Color>
+    <SolidColorBrush x:Key="TextColorBrush" Color="{StaticResource ResourceKey=TextColor}"/>
+
+    <Color x:Key="DisableTextColor">#8c8c8c</Color>
+    <SolidColorBrush x:Key="DisableTextColorBrush" Color="{StaticResource ResourceKey=DisableTextColor}"/>
+
+    <Color x:Key="HyperlinkColor">#007FFF</Color>
+    <SolidColorBrush x:Key="HyperlinkBrush" Color="{StaticResource ResourceKey=HyperlinkColor}"/>
+
+    <Color x:Key="DisableHyperlinkColor">#9F46FF</Color>
+    <SolidColorBrush x:Key="DisableHyperlinkBrush" Color="{StaticResource ResourceKey=DisableHyperlinkColor}"/>
+
+</ResourceDictionary>

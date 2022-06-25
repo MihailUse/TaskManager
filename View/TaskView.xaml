@@ -1,0 +1,146 @@
+﻿<UserControl x:Class="TaskManager.View.TaskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TaskManager.View"
+             xmlns:viewModels="clr-namespace:TaskManager.ViewModel"
+             xmlns:Converters="clr-namespace:TaskManager.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewModels:TaskViewModel}"
+             Background="{StaticResource ResourceKey=Dark600Brush}"
+             Style="{StaticResource FormStyle}">
+
+    <UserControl.Resources>
+        <Converters:VisibilityConvertor x:Key="VisibilityConvertor"/>
+        <Converters:ImageConverter x:Key="ImageConverter"/>
+
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource ResourceKey=TextColorBrush}" />
+        </Style>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Return" Command="{Binding Path=ConfirmCommand}"/>
+    </UserControl.InputBindings>
+
+    <ScrollViewer
+        HorizontalScrollBarVisibility="Disabled"
+        VerticalScrollBarVisibility="Auto">
+
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="230" />
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel 
+                Margin="30,10"
+                Width="auto"
+                Grid.Column="0"
+                DockPanel.Dock="Left"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch">
+
+                <!--<TextBlock 
+                    Margin="0,-20,0,10" 
+                    TextWrapping="Wrap" 
+                    Text="{Binding Path=ErrorMessage}"
+                    Foreground="{StaticResource ResourceKey=ErrorBrush}" 
+                    Visibility="{Binding Path=HasError, Converter={StaticResource ResourceKey=VisibilityConvertor}}"/>-->
+
+                <TextBlock
+                    FontSize="34"
+                    Text="{Binding Path=Task.Title}"/>
+
+                <Border 
+                    Margin="0,20"
+                    Width="auto"
+                    HorizontalAlignment="Stretch"
+                    BorderThickness="1"
+                    BorderBrush="{StaticResource ResourceKey=TextColorBrush}"/>
+
+                <TextBlock
+                    FontSize="22"
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding Path=Task.Description}"/>
+
+
+                <!--TextBox 
+                    Padding="30"
+                    Height="auto"
+                    MinHeight="100"
+                    TextWrapping="Wrap"
+                    AcceptsReturn="True"
+                    VerticalScrollBarVisibility="Auto"
+                    HorizontalScrollBarVisibility="Disabled"
+                    Text="{Binding Path=Description, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                    Validation.ErrorTemplate="{StaticResource ResourceKey=ErrorTemplate}"/>
+
+                <Button 
+                    Margin="0,40,0,40"
+                    Content="_Comment"
+                    Style="{StaticResource ResourceKey=RoundButtonStyle}"
+                    Command="{Binding Path=ConfirmCommand}"/-->
+            </StackPanel>
+
+            <StackPanel
+                Grid.Column="1"
+                Width="220"
+                VerticalAlignment="Top"
+                DockPanel.Dock="Right">
+
+                <Label Target="{Binding ElementName=Assignment}" Content="_Assignment"/>
+                <ComboBox 
+                    x:Name="Assignment"
+                    ItemsSource="{Binding Path=Users}"
+                    SelectedValue="{Binding Path=CurrentUser}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel 
+                                Margin="10,0"
+                                Orientation="Horizontal">
+
+                                <Image 
+                                    Width="28"
+                                    Height="28"
+                                    Margin="0,0,8,0"
+                                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                    Source="{Binding Path=Avatar, Converter={StaticResource ResourceKey=ImageConverter}}"/>
+
+                                <TextBlock 
+                                    FontSize="18"
+                                    Text="{Binding Path=Login}"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Label Target="{Binding ElementName=Status}" Content="_Status"/>
+                <ComboBox 
+                    x:Name="Status"
+                    ItemsSource="{Binding Path=Statuses}"
+                    SelectedValue="{Binding Path=CurrentStatus}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel 
+                                Margin="10,0"
+                                Orientation="Horizontal">
+
+                                <TextBlock 
+                                    FontSize="18"
+                                    Text="{Binding Path=Name}"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
