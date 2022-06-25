@@ -2,4 +2,4 @@
 
 # Database
 
-![ERD database](./Docs/ERD.png)
+![ERD database](./Docs/ERD.jpg)
