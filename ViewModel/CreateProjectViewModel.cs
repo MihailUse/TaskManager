@@ -128,10 +128,10 @@ namespace TaskManager.ViewModel
             ConfirmCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new ProjectListViewModel(), canExecute, canNavigate);
             PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
             GenerateImageCommand = new RelayCommand(generateImage);
+            DeleteUserCommand = new RelayCommand(deleteMembership, isOwner);
             SetTesterCommand = new RelayCommand(setRole(Roles.Tester), isOwner);
             SetDeveloperCommand = new RelayCommand(setRole(Roles.Developer), isOwner);
             SetAdministratorCommand = new RelayCommand(setRole(Roles.Administrator), isOwner);
-            DeleteUserCommand = new RelayCommand(deleteMembership, isOwner);
         }
 
         public CreateProjectViewModel(Project project)

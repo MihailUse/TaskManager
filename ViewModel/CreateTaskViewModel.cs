@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TaskManager.Command;
 using TaskManager.Model;
+using TaskManager.Model.Database;
 using TaskManager.Model.Database.Repository;
 
 namespace TaskManager.ViewModel
@@ -30,6 +31,7 @@ namespace TaskManager.ViewModel
                 _title = value;
                 OnPropertyChanged(nameof(Title));
                 ValidateProperty(value, nameof(Task.Title), _task);
+                _task.Title = value;
             }
         }
         public string Description
@@ -40,6 +42,7 @@ namespace TaskManager.ViewModel
                 _description = value;
                 OnPropertyChanged(nameof(Description));
                 ValidateProperty(value, nameof(Task.Description), _task);
+                _task.Description = value;
             }
         }
 
@@ -78,9 +81,10 @@ namespace TaskManager.ViewModel
 
             try
             {
-                // create project
-                _task.Title = _title;
-                _task.Description = _description;
+                // create task
+                _task.UserId = CurrentUser.Id;
+                _task.ProjectId = CurrentProject.Id;
+                _task.StatusId = (int)Statuses.TODO;
                 _task = _taskRepository.Create(_task);
             }
             catch (Exception error)
