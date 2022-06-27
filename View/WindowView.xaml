@@ -1,0 +1,94 @@
+﻿<Window x:Class="TaskManager.View.WindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TaskManager.View"
+        xmlns:viewModels="clr-namespace:TaskManager.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewModels:WindowViewModel}"
+        mc:Ignorable="d"
+        
+        Title="MainWindow"
+        Height="800" Width="1200"
+        MinHeight="600" MinWidth="1000"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="WhiteSmoke"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="Manual">
+
+    <DockPanel LastChildFill="True">
+
+        <!-- Define window header -->
+        <Border 
+            DockPanel.Dock="Top" 
+            MouseDown="DragMove"
+            Background="{StaticResource Dark800Brush}">
+
+            <StackPanel 
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right">
+
+                <Button 
+                    Command="{Binding Path=MinimizeWindowCommand}"
+                    Style="{StaticResource ResourceKey=ButtonFigureStyle}">
+
+                    <Button.Resources>
+                        <PathGeometry x:Key="Geometry">
+                            <PathFigure StartPoint="0,12">
+                                <LineSegment Point="12,12" />
+                            </PathFigure>
+                        </PathGeometry>
+                    </Button.Resources>
+                </Button>
+
+                <Button 
+                    Command="{Binding Path=MaximizeWindowCommand}"
+                    Style="{StaticResource ResourceKey=ButtonFigureStyle}">
+
+                    <Button.Resources>
+                        <PathGeometry x:Key="Geometry">
+                            <PathFigure IsClosed="True" StartPoint="0,0">
+                                <LineSegment Point="0,12" />
+                                <LineSegment Point="12,12" />
+                                <LineSegment Point="12,0" />
+                            </PathFigure>
+                        </PathGeometry>
+                    </Button.Resources>
+                </Button>
+
+                <Button 
+                    Command="{Binding Path=CloseWindowCommand}"
+                    Style="{StaticResource ResourceKey=ButtonFigureStyle}">
+
+                    <Button.Resources>
+                        <PathGeometry x:Key="Geometry">
+                            <PathFigure StartPoint="0,0">
+                                <LineSegment Point="12,12" />
+                            </PathFigure>
+                            <PathFigure StartPoint="0,12">
+                                <LineSegment Point="12,0" />
+                            </PathFigure>
+                        </PathGeometry>
+                    </Button.Resources>
+                </Button>
+
+            </StackPanel>
+        </Border>
+
+        <!-- Define views -->
+        <ContentControl DockPanel.Dock="Bottom" Content="{Binding Path=CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewModels:AuthViewModel}">
+                    <local:AuthView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:RegistrationViewModel}">
+                    <local:RegistrationView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:MainViewModel}">
+                    <local:MainView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+    </DockPanel>
+</Window>

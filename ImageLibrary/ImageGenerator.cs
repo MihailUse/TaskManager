@@ -6,7 +6,7 @@ namespace ImageLibrary
 {
 	public class ImageGenerator
 	{
-		static Random rand = new Random();
+		static readonly Random _rand = new Random();
 
 		public static Bitmap GenerateImage(
 			int pixelsInWidth = 8,
@@ -23,9 +23,9 @@ namespace ImageLibrary
 			{
 				for (int x = 0; x < halfPixelsInWidth; x++)
 				{
-					if (rand.Next(whiteFrequency).Equals(1))
+					if (_rand.Next(whiteFrequency).Equals(1))
 					{
-						int randomColor = rand.Next(countColor);
+						int randomColor = _rand.Next(countColor);
 						image.SetPixel(x, y, colors[randomColor]);
 						image.SetPixel((pixelsInWidth - 1) - x, y, colors[randomColor]); // width-1 because SetPixel range [0, width-1]
 					}
@@ -47,9 +47,9 @@ namespace ImageLibrary
 
 			for (int i = 0; i < countColor; i++)
 			{
-				int red = rand.Next(256);
-				int green = rand.Next(256);
-				int blue = rand.Next(256);
+				int red = _rand.Next(256);
+				int green = _rand.Next(256);
+				int blue = _rand.Next(256);
 
 				colors[i] = Color.FromArgb(red, green, blue);
 			}

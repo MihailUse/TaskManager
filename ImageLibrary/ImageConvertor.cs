@@ -8,44 +8,56 @@ namespace ImageLibrary
 {
     public static class ImageConvertor
     {
-		public static BitmapImage BytesToImage(byte[] bytes)
-		{
-			using (MemoryStream ms = new MemoryStream(bytes))
-			{
-				ms.Position = 0;
-				BitmapImage image = new BitmapImage();
-				image.BeginInit();
-				image.StreamSource = ms;
-				image.CacheOption = BitmapCacheOption.OnLoad;
-				image.EndInit();
+        public static Bitmap BytesToBitmap(byte[] bytes)
+        {
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                //ms.Position = 0;
+                //BitmapImage image = new BitmapImage();
+                //image.BeginInit();
+                //image.StreamSource = ms;
+                //image.CacheOption = BitmapCacheOption.OnLoad;
+                //image.EndInit();
 
-				return image;
-			}
-		}
+                //return image;
+                return new Bitmap(ms);
+            }
+        }
 
         public static byte[] BitmapToBytes(Bitmap bitmap)
-		{
-			byte[] byteArray;
+        {
+            byte[] byteArray;
 
-			using (MemoryStream ms = new MemoryStream())
-			{
-				bitmap.Save(ms, ImageFormat.Png);
-				byteArray = ms.ToArray();
-			}
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, ImageFormat.Png);
+                byteArray = ms.ToArray();
+            }
 
-			return byteArray;
-		}
+            return byteArray;
+        }
 
-		public static Bitmap ResizeImage(Bitmap image, int height, int width)
-		{
-			Bitmap resultImage = new Bitmap(width, height);
-			Graphics graphics = Graphics.FromImage((Image)resultImage);
+        public static BitmapImage ResizeImage(Bitmap image, int height, int width)
+        {
+            Bitmap bitmap = new Bitmap(width, height);
+            BitmapImage bitmapImage = new BitmapImage();
+            Graphics graphics = Graphics.FromImage((Image)bitmap);
 
-			graphics.PixelOffsetMode = PixelOffsetMode.Half;
-			graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			graphics.DrawImage((Image)image, 0, 0, width, height);
-			
-			return resultImage;
-		}
-	}
+            graphics.PixelOffsetMode = PixelOffsetMode.Half;
+            graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            graphics.DrawImage((Image)image, 0, 0, width, height);
+
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Jpeg);
+                memory.Position = 0;
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+            }
+
+            return bitmapImage;
+        }
+    }
 }

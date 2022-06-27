@@ -1,0 +1,254 @@
+﻿using ImageLibrary;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using TaskManager.Command;
+using TaskManager.Model;
+using TaskManager.Model.Database;
+using TaskManager.Model.Database.Repository;
+using TaskManager.Model.SubModels;
+
+namespace TaskManager.ViewModel
+{
+    internal class CreateProjectViewModel : BaseViewModel
+    {
+        public NavigateCommand ConfirmCommand { get; }
+        public ICommand GenerateImageCommand { get; }
+        public ICommand DeleteUserCommand { get; }
+        public ICommand SetTesterCommand { get; }
+        public ICommand SetDeveloperCommand { get; }
+        public ICommand SetAdministratorCommand { get; }
+
+        public bool HasError { get; private set; }
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set { _errorMessage = value; HasError = true; OnPropertyChanged(nameof(ErrorMessage)); }
+        }
+        public byte[] Logo
+        {
+            get { return _logo; }
+            set
+            {
+                _logo = value;
+                _project.Logo = value;
+                OnPropertyChanged(nameof(Logo));
+            }
+        }
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+                ValidateProperty(value, nameof(Project.Name), _project);
+                _project.Name = value;
+            }
+        }
+        public string Description
+        {
+            get { return _description; }
+            set
+            {
+                _description = value;
+                OnPropertyChanged(nameof(Description));
+                ValidateProperty(value, nameof(Project.Description), _project);
+                _project.Description = value;
+            }
+        }
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                _searchText = value;
+                if (_searchText != null && _searchText.Length > 1)
+                    setSearchList(value);
+                else
+                    SearchableUsers.Clear();
+            }
+        }
+        public User SelectedUser
+        {
+            get { return _selectedUser; }
+            set
+            {
+                if (value != null && _searchText.Length > 1)
+                {
+                    _selectedUser = value;
+
+                    Memberships.Add(new Membership()
+                    {
+                        ProjectId = _project.Id,
+                        UserId = value.Id,
+                        User = value,
+                        RoleId = (int)Roles.Developer
+                    });
+                    SearchText = String.Empty;
+                }
+            }
+        }
+        public ObservableCollection<User> SearchableUsers { get; set; }
+        public ObservableCollection<Membership> Memberships { get; set; }
+
+        private string _searchText;
+        private User _selectedUser;
+        private byte[] _logo;
+        private string _name;
+        private string _description;
+        private string _errorMessage;
+        private Project _project;
+        private readonly User _user;
+        private readonly UserRepository _userRepository;
+        private readonly ProjectRepository _projectRepository;
+        private readonly MembershipRepository _membershipRepository;
+
+        public CreateProjectViewModel()
+        {
+            _user = MainViewModel.User;
+            _project = new Project();
+            _userRepository = new UserRepository(WindowViewModel.DatabaseContext);
+            _projectRepository = new ProjectRepository(WindowViewModel.DatabaseContext);
+            _membershipRepository = new MembershipRepository(WindowViewModel.DatabaseContext);
+
+            // init props
+            Logo = _user.Avatar;
+            SearchableUsers = new ObservableCollection<User>();
+            Memberships = new ObservableCollection<Membership>() { 
+                new Membership() { UserId = _user.Id, User = _user, RoleId = (int)Roles.Owner} 
+            };
+
+            //init commands
+            ConfirmCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new ProjectListViewModel(), canExecute, canNavigate);
+            PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
+            GenerateImageCommand = new RelayCommand(generateImage);
+            DeleteUserCommand = new RelayCommand(deleteMembership, isOwner);
+            SetTesterCommand = new RelayCommand(setRole(Roles.Tester), isOwner);
+            SetDeveloperCommand = new RelayCommand(setRole(Roles.Developer), isOwner);
+            SetAdministratorCommand = new RelayCommand(setRole(Roles.Administrator), isOwner);
+        }
+
+        public CreateProjectViewModel(Project project)
+        {
+            _user = MainViewModel.User;
+            _userRepository = new UserRepository(WindowViewModel.DatabaseContext);
+            _projectRepository = new ProjectRepository(WindowViewModel.DatabaseContext);
+            _membershipRepository = new MembershipRepository(WindowViewModel.DatabaseContext);
+            _project = _projectRepository.Find(project.Id);
+
+            // init props
+            Logo = _project.Logo;
+            Name = _project.Name;
+            Description = _project.Description;
+            SearchableUsers = new ObservableCollection<User>();
+            Memberships = new ObservableCollection<Membership>(_membershipRepository.GetProjectMemberships(_project.Id));
+
+            //init commands
+            ConfirmCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new ProjectListViewModel(), canExecute, canNavigate);
+            PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
+            GenerateImageCommand = new RelayCommand(generateImage);
+            SetTesterCommand = new RelayCommand(setRole(Roles.Tester), isOwner);
+            SetDeveloperCommand = new RelayCommand(setRole(Roles.Developer), isOwner);
+            SetAdministratorCommand = new RelayCommand(setRole(Roles.Administrator), isOwner);
+            DeleteUserCommand = new RelayCommand(deleteMembership, isOwner);
+        }
+
+        #region membership list methods
+        private bool isOwner(object parameter)
+        {
+            Membership membership = parameter as Membership;
+            return membership.UserId != _user.Id;
+        }
+        private void deleteMembership(object parameter)
+        {
+            Membership membership = parameter as Membership;
+            Memberships.Remove(membership);
+            _membershipRepository.Delete(membership);
+        }
+        private Action<object> setRole(Roles role)
+        {
+            return (parameter) =>
+            {
+                Membership membership = parameter as Membership;
+                Membership selectedMembership = Memberships.First(x => x.Id == membership.Id);
+                int index = Memberships.IndexOf(membership);
+
+                // update membership in collection
+                selectedMembership.RoleId = (int)role;
+                Memberships.RemoveAt(index);
+                Memberships.Insert(index, selectedMembership);
+            };
+        }
+        private void setSearchList(string login)
+        {
+            List<long> userIds = Memberships
+                .Select(m => m.UserId)
+                .ToList();
+
+            List<User> users = _userRepository
+                .GetAllByLogin(login)
+                .Where(x => !userIds.Contains(x.Id) && x.Id != _user.Id)
+                .ToList();
+
+            SearchableUsers = new ObservableCollection<User>(users);
+            OnPropertyChanged(nameof(SearchableUsers));
+        }
+        #endregion
+
+        private void generateImage(object parameter)
+        {
+            Logo = ImageConvertor.BitmapToBytes(ImageGenerator.GenerateImage());
+        }
+
+        // validate uniq name and create project
+        private bool canNavigate()
+        {
+            if (_projectRepository.IsExist(_project))
+            {
+                ErrorMessage = "Name already exists";
+                return false;
+            }
+
+            try
+            {
+                // create project
+                _project = _projectRepository.CreateOrUpdate(_project);
+
+                // create memberships
+                List<Membership> memberships = Memberships.ToList();
+                memberships.ForEach(x => x.ProjectId = _project.Id); // update project id
+
+                _membershipRepository.CreateOrUpdate(memberships);
+            }
+            catch (Exception error)
+            {
+                ErrorMessage = $"Error {error.Message}";
+                return false;
+            }
+
+            return true;
+        }
+
+        // validate fields
+        private bool canExecute(object parameter)
+        {
+            try
+            {
+                ValidateProperty(_name, nameof(Project.Name), _project);
+                ValidateProperty(_description, nameof(Project.Description), _project);
+            }
+            catch (ValidationException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+    }
+}
