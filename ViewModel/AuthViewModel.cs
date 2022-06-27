@@ -7,42 +7,33 @@ using TaskManager.Model.Database.Repository;
 
 namespace TaskManager.ViewModel
 {
-    internal class AuthViewModel : BaseViewModel
+    internal class AuthViewModel : BaseFormViewModel
     {
         public NavigateCommand NavigateRegistrationCommand { get; }
         public NavigateCommand ConfirmCommand { get; }
 
-        public bool HasError { get; private set; }
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { _errorMessage = value; HasError = true; OnPropertyChanged(nameof(ErrorMessage)); }
-        }
         public string Login
         {
-            get { return _login; }
+            get { return _user.Login; }
             set
             {
-                _login = value;
+                _user.Login = value;
                 OnPropertyChanged(nameof(Login));
                 ValidateProperty(value, nameof(User.Login), _user);
             }
         }
         public string Password
         {
-            get { return _password; }
+            get { return _user.Password; }
             set
             {
-                _password = value;
+                _user.Password = value;
                 OnPropertyChanged(nameof(Password));
                 ValidateProperty(value, nameof(User.Password), _user);
             }
         }
 
         private User _user;
-        private string _login;
-        private string _password;
-        private string _errorMessage;
         private readonly UserRepository _userRepository;
 
         public AuthViewModel(NavigationManager windowNavigationManager)
@@ -59,14 +50,14 @@ namespace TaskManager.ViewModel
         // check login with password
         private bool canNavigate()
         {
-            _user = _userRepository.Read(x => (x.Login == _login) && !x.DetetedAt.HasValue);
-            if (_user == null || !Argon2.Verify(_user.Password, _password))
+            User user = _userRepository.GetByLogin(_user.Login);
+            if (user == null || !Argon2.Verify(user.Password, _user.Password))
             {
-                _user = new User();
                 ErrorMessage = "Incorrect login or password";
                 return false;
             }
 
+            _user = user;
             return true;
         }
 
@@ -75,8 +66,8 @@ namespace TaskManager.ViewModel
         {
             try
             {
-                ValidateProperty(_login, nameof(User.Login), _user);
-                ValidateProperty(_password, nameof(User.Password), _user);
+                ValidateProperty(_user.Login, nameof(User.Login), _user);
+                ValidateProperty(_user.Password, nameof(User.Password), _user);
             }
             catch (ValidationException)
             {

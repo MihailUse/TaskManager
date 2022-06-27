@@ -9,46 +9,35 @@ using TaskManager.Model.Database.Repository;
 
 namespace TaskManager.ViewModel
 {
-    internal class CreateTaskViewModel : BaseViewModel
+    internal class CreateTaskViewModel : BaseFormViewModel
     {
         public NavigateCommand ConfirmCommand { get; }
 
-        public bool HasError { get; private set; }
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { _errorMessage = value; HasError = true; OnPropertyChanged(nameof(ErrorMessage)); }
-        }
-        public List<Project> Projects { get; }
         public List<User> Users { get; }
-        public Project CurrentProject { get; set; }
+        public List<Project> Projects { get; }
         public User CurrentUser { get; set; }
+        public Project CurrentProject { get; set; }
         public string Title
         {
-            get { return _title; }
+            get { return _task.Title; }
             set
             {
-                _title = value;
+                _task.Title = value;
                 OnPropertyChanged(nameof(Title));
                 ValidateProperty(value, nameof(Task.Title), _task);
-                _task.Title = value;
             }
         }
         public string Description
         {
-            get { return _description; }
+            get { return _task.Description; }
             set
             {
-                _description = value;
+                _task.Description = value;
                 OnPropertyChanged(nameof(Description));
                 ValidateProperty(value, nameof(Task.Description), _task);
-                _task.Description = value;
             }
         }
 
-        private string _title;
-        private string _description;
-        private string _errorMessage;
         private Task _task;
         private readonly TaskRepository _taskRepository;
         private readonly ProjectRepository _projectRepository;
@@ -61,9 +50,9 @@ namespace TaskManager.ViewModel
             _projectRepository = new ProjectRepository(WindowViewModel.DatabaseContext);
             _membershipRepository = new MembershipRepository(WindowViewModel.DatabaseContext);
 
+            Projects = _projectRepository.GetUserProjects(MainViewModel.User);
             CurrentProject = project ?? Projects.First();
             Users = _membershipRepository.GetProjectUsers(CurrentProject);
-            Projects = _projectRepository.GetUserProjects(MainViewModel.User);
 
             //init commands
             ConfirmCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new TaskListViewModel(project), canExecute, canNavigate);
@@ -73,7 +62,7 @@ namespace TaskManager.ViewModel
         // validate uniq name and create project
         private bool canNavigate()
         {
-            if (_taskRepository.IsExist(_title, CurrentProject.Id))
+            if (_taskRepository.IsExist(_task.Title, CurrentProject.Id))
             {
                 ErrorMessage = "Title already exists";
                 return false;
@@ -89,7 +78,6 @@ namespace TaskManager.ViewModel
             }
             catch (Exception error)
             {
-                _task = new Task();
                 ErrorMessage = $"Error {error.Message}";
                 return false;
             }
@@ -102,8 +90,8 @@ namespace TaskManager.ViewModel
         {
             try
             {
-                ValidateProperty(_title, nameof(Task.Title), _task);
-                ValidateProperty(_description, nameof(Task.Description), _task);
+                ValidateProperty(_task.Title, nameof(Task.Title), _task);
+                ValidateProperty(_task.Description, nameof(Task.Description), _task);
             }
             catch (ValidationException)
             {

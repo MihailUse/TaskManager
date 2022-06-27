@@ -26,9 +26,9 @@ namespace TaskManager.Model.Database.Repository
             return newUser;
         }
 
-        public User Read(Expression<Func<User, bool>> predicate)
+        public User GetByLogin(string login)
         {
-            return _context.User.Where(predicate).FirstOrDefault();
+            return _context.User.Where(x => (x.Login == login) && !x.DetetedAt.HasValue).FirstOrDefault();
         }
 
         public User Update(User newUser)
