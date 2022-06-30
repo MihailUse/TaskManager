@@ -135,6 +135,7 @@
 
             <Button 
                 Margin="0,40,0,100"
+                Width="200"
                 Content="_Save"
                 Style="{StaticResource ResourceKey=RoundButtonStyle}"
                 Command="{Binding Path=ConfirmCommand}"/>
