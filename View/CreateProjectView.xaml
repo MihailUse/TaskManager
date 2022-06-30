@@ -155,33 +155,37 @@
                         <Setter Property="ContextMenu">
                             <Setter.Value>
                                 <ContextMenu StaysOpen="True">
-                                    <MenuItem Header="Set as _Tester"
-                                          Command="{Binding 
+                                    <MenuItem 
+                                        Header="Set as _Tester"
+                                        Command="{Binding 
                                             Path=PlacementTarget.Tag.(viewModels:CreateProjectViewModel.SetTesterCommand), 
                                             RelativeSource={RelativeSource AncestorType=ContextMenu},
                                             IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                        CommandParameter="{Binding Path=.}"/>
 
-                                    <MenuItem Header="Set as _Developer"
-                                          Command="{Binding 
+                                    <MenuItem 
+                                        Header="Set as _Developer"
+                                        Command="{Binding 
                                             Path=PlacementTarget.Tag.(viewModels:CreateProjectViewModel.SetDeveloperCommand), 
                                             RelativeSource={RelativeSource AncestorType=ContextMenu},
                                             IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                        CommandParameter="{Binding Path=.}"/>
 
-                                    <MenuItem Header="Set as _Administrator"
-                                          Command="{Binding 
+                                    <MenuItem 
+                                        Header="Set as _Administrator"
+                                        Command="{Binding 
                                             Path=PlacementTarget.Tag.(viewModels:CreateProjectViewModel.SetAdministratorCommand), 
                                             RelativeSource={RelativeSource AncestorType=ContextMenu},
                                             IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                        CommandParameter="{Binding Path=.}"/>
 
-                                    <MenuItem Header="_Delete"
-                                          Command="{Binding 
+                                    <MenuItem 
+                                        Header="_Delete"
+                                        Command="{Binding 
                                             Path=PlacementTarget.Tag.(viewModels:CreateProjectViewModel.DeleteUserCommand), 
                                             RelativeSource={RelativeSource AncestorType=ContextMenu},
                                             IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                        CommandParameter="{Binding Path=.}"/>
                                 </ContextMenu>
                             </Setter.Value>
                         </Setter>

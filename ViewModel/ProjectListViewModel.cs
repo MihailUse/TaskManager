@@ -23,6 +23,7 @@ namespace TaskManager.ViewModel
         public ICommand ListItemAboutCommand { get; }
         public ICommand ListItemEditCommand { get; }
         public ICommand ListItemTasksCommand { get; }
+        public ICommand ListItemDeleteCommand { get; }
         public ICommand CreateProjectCommand { get; }
 
         public List<ProjectItem> Projects
@@ -47,16 +48,28 @@ namespace TaskManager.ViewModel
 
             // init commands
             SetFilterCommand = new RelayCommand(setFilter);
-            CreateProjectCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateProjectViewModel());
-            ListItemTasksCommand = new NavigateCommand(MainViewModel.NavigationManager, navigateTasks);
             ListItemAboutCommand = new RelayCommand((p) => { }, (p) => false);
             ListItemEditCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateProjectViewModel((ProjectItem)p), canEditProject);
+            ListItemTasksCommand = new NavigateCommand(MainViewModel.NavigationManager, navigateTasks);
+            ListItemDeleteCommand = new RelayCommand(deleteProject, canDeleteProject);
+            CreateProjectCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateProjectViewModel());
         }
 
         private bool canEditProject(object parameter)
         {
             ProjectItem projectItem = parameter as ProjectItem;
             return projectItem.Role <= Roles.Administrator;
+        }
+        private bool canDeleteProject(object parameter)
+        {
+            ProjectItem projectItem = parameter as ProjectItem;
+            return projectItem.Role == Roles.Owner;
+        }
+        private void deleteProject(object parameter)
+        {
+            ProjectItem projectItem = parameter as ProjectItem;
+            _repository.Delete(projectItem.Id);
+            loadTasks();
         }
         private BaseViewModel navigateTasks(object parameter)
         {

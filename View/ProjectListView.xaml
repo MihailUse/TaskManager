@@ -140,26 +140,37 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu StaysOpen="True">
-                                <MenuItem Header="_About"
-                                          Command="{Binding 
-                                    Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemAboutCommand), 
-                                    RelativeSource={RelativeSource AncestorType=ContextMenu},
-                                    IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                <MenuItem 
+                                    Header="_About"
+                                    Command="{Binding 
+                                        Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemAboutCommand), 
+                                        RelativeSource={RelativeSource AncestorType=ContextMenu},
+                                        IsAsync=True}" 
+                                    CommandParameter="{Binding Path=.}"/>
 
-                                <MenuItem Header="_Edit"
-                                          Command="{Binding 
-                                    Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemEditCommand), 
-                                    RelativeSource={RelativeSource AncestorType=ContextMenu},
-                                    IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                <MenuItem 
+                                    Header="_Edit"
+                                    Command="{Binding 
+                                        Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemEditCommand), 
+                                        RelativeSource={RelativeSource AncestorType=ContextMenu},
+                                        IsAsync=True}" 
+                                    CommandParameter="{Binding Path=.}"/>
 
-                                <MenuItem Header="_Tasks"
-                                          Command="{Binding 
-                                    Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemTasksCommand), 
-                                    RelativeSource={RelativeSource AncestorType=ContextMenu},
-                                    IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                <MenuItem 
+                                    Header="_Tasks"
+                                    Command="{Binding 
+                                        Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemTasksCommand), 
+                                        RelativeSource={RelativeSource AncestorType=ContextMenu},
+                                        IsAsync=True}" 
+                                    CommandParameter="{Binding Path=.}"/>
+
+                                <MenuItem 
+                                    Header="_Delete"
+                                    Command="{Binding 
+                                        Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemDeleteCommand), 
+                                        RelativeSource={RelativeSource AncestorType=ContextMenu},
+                                        IsAsync=True}" 
+                                    CommandParameter="{Binding Path=.}"/>
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

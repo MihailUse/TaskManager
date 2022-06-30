@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using TaskManager.Model.SubModels;
@@ -76,8 +77,9 @@ namespace TaskManager.Model.Database.Repository
             return project;
         }
 
-        public void Delete(Project project)
+        public void Delete(long id)
         {
+            Project project = _context.Project.Find(id);
             _context.Project.Remove(project);
             _context.SaveChanges();
         }
