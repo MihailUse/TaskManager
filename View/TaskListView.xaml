@@ -60,6 +60,27 @@
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
+                <ComboBox 
+                    Width="180"
+                    Margin="0,0,10,0"
+                    ItemsSource="{Binding Path=Statuses, Mode=OneTime}"
+                    SelectedValue="{Binding Path=CurrentStatus}">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel 
+                                Margin="10,0"
+                                Orientation="Horizontal">
+
+                                <TextBlock 
+                                    FontSize="18"
+                                    Text="{Binding Path=Name}"
+                                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
                 <!-- Tag contains enum value -->
                 <!-- pass RadioButton tag to command as parameter -->
                 <RadioButton 

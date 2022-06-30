@@ -30,19 +30,6 @@
             <StackPanel 
                 DockPanel.Dock="Top"
                 HorizontalAlignment="Stretch">
-
-                <RadioButton 
-                    GroupName="Menu" 
-                    Content="Home"
-                    IsEnabled="False"
-                    Command="{Binding Path=NavigateHomeCommand}"
-                    Style="{StaticResource ResourceKey=MenuButtonStyle}"
-                    IsChecked="{Binding 
-                        Path=CurrentViewModel, 
-                        Mode=OneWay,
-                        Converter={StaticResource EnumToBoolConverter}, 
-                        ConverterParameter={x:Static viewModels:ViewModels.HomeViewModel}}"/>
-
                 <RadioButton 
                     GroupName="Menu" 
                     Content="Projects"
@@ -64,18 +51,6 @@
                         Mode=OneWay,
                         Converter={StaticResource EnumToBoolConverter}, 
                         ConverterParameter={x:Static Member=viewModels:ViewModels.TaskListViewModel}}"/>
-
-                <RadioButton 
-                    GroupName="Menu" 
-                    Content="Settings"
-                    IsEnabled="False"
-                    Style="{StaticResource ResourceKey=MenuButtonStyle}"/>
-
-                <RadioButton 
-                    GroupName="Menu" 
-                    Content="Statistics"
-                    IsEnabled="False"
-                    Style="{StaticResource ResourceKey=MenuButtonStyle}"/>
 
                 <RadioButton 
                     GroupName="Menu" 

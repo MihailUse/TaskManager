@@ -27,18 +27,26 @@ namespace TaskManager.ViewModel
             get { return _tasks; }
             set { _tasks = value; OnPropertyChanged(nameof(Tasks)); }
         }
+        public List<Status> Statuses { get; }
+        public List<Project> Projects { get; }
         public Project CurrentProject
         {
             get { return _currentProject; }
             set { _currentProject = value; loadTasks(); }
         }
-        public List<Project> Projects { get; }
+        public Status CurrentStatus
+        {
+            get { return _currentstatus; }
+            set { _currentstatus = value; loadTasks(); }
+        }
 
         private Project _currentProject;
+        private Status _currentstatus;
         private TaskFilter _filter;
         private List<Task> _tasks;
         private readonly User _user;
         private readonly TaskRepository _taskRepository;
+        private readonly StatusRepository _statusRepository;
 
         public TaskListViewModel(Project project = null)
         {
@@ -46,8 +54,12 @@ namespace TaskManager.ViewModel
             _user = MainViewModel.User;
             _filter = TaskFilter.AllTasks;
             _taskRepository = new TaskRepository(WindowViewModel.DatabaseContext);
+            _statusRepository = new StatusRepository(WindowViewModel.DatabaseContext);
 
             // load default filter 
+            Statuses = _statusRepository.ReadAll();
+            Statuses.Add(new Status(-1, "all"));
+            CurrentStatus = Statuses.Last();
             Projects = new ProjectRepository(WindowViewModel.DatabaseContext).GetUserProjects(_user);
             CurrentProject = project ?? Projects.FirstOrDefault();
 
@@ -69,14 +81,15 @@ namespace TaskManager.ViewModel
         private void loadTasks()
         {
             if (_currentProject == null) return;
+            Status status = _currentstatus.Id == -1 ? null : _currentstatus;
 
             switch (_filter)
             {
                 case TaskFilter.AllTasks:
-                    Tasks = _taskRepository.GetTaskItems(_currentProject.Id);
+                    Tasks = _taskRepository.GetAllTasks(_currentProject.Id, status);
                     break;
                 case TaskFilter.UserTasks:
-                    Tasks = _taskRepository.GetTaskItems(_currentProject.Id, _user);
+                    Tasks = _taskRepository.GetAllTasks(_currentProject.Id, status, _user);
                     break;
             }
         }

@@ -33,7 +33,7 @@ namespace TaskManager.Model.Database.Repository
             _context.SaveChanges();
         }
 
-        public List<Task> GetTaskItems(long projectId, User user = null, string status = null)
+        public List<Task> GetAllTasks(long projectId, Status status = null, User user = null)
         {
             IQueryable<Task> query = _context.Task.Where(x => (x.ProjectId == projectId));
 
@@ -41,7 +41,7 @@ namespace TaskManager.Model.Database.Repository
                 query = query.Where(x => x.UserId == user.Id);
 
             if (status != null)
-                query = query.Where(x => x.Status.Name == status);
+                query = query.Where(x => x.Status.Id == status.Id);
 
             return query
                 .Include(x => x.Status)
