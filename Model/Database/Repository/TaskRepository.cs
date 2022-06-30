@@ -15,16 +15,22 @@ namespace TaskManager.Model.Database.Repository
             _context = context;
         }
 
-        public bool IsExist(string title, long projectId)
+        public bool IsExist(Task task, Project project)
         {
-            return _context.Task.Where(x => (x.Title == title) && (x.ProjectId == projectId)).Any();
+            return _context.Task
+                .Where(x => (x.Id != task.Id) && (x.ProjectId == project.Id) && (x.Title == task.Title))
+                .Any();
         }
 
-        public Task Create(Task task)
+        public void CreateOrUpdate(Task newTask)
         {
-            Task newProject = _context.Task.Add(task);
+            Task task = _context.Task.Find(newTask.Id);
+            if (task == null)
+                task = _context.Task.Add(newTask);
+            else
+                _context.Entry(task).CurrentValues.SetValues(newTask);
+
             _context.SaveChanges();
-            return newProject;
         }
 
         public List<Task> GetTaskItems(long projectId, User user = null, string status = null)

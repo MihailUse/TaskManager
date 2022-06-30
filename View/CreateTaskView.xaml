@@ -112,6 +112,27 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
+            <Label Target="{Binding ElementName=Status}" Content="_Status"/>
+            <ComboBox 
+                    x:Name="Status"
+                    ItemsSource="{Binding Path=Statuses}"
+                    SelectedValue="{Binding Path=CurrentStatus}">
+
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel 
+                                Margin="10,0"
+                                Orientation="Horizontal">
+
+                            <TextBlock 
+                                    FontSize="18"
+                                    Text="{Binding Path=Name}"
+                                    VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
             <Button 
                 Margin="0,40,0,100"
                 Content="_Save"

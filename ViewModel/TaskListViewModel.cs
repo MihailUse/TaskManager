@@ -53,8 +53,8 @@ namespace TaskManager.ViewModel
 
             // init commands
             SetFilterCommand = new RelayCommand(setFilter);
-            ListItemEditCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateTaskViewModel((Task)p));
             ListItemAboutCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new TaskViewModel((Task)p));
+            ListItemEditCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateTaskViewModel((Task)p));
             CreateTaskCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateTaskViewModel(CurrentProject), (p) => CurrentProject != null);
         }
 
