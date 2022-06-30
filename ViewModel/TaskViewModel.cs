@@ -43,7 +43,7 @@ namespace TaskManager.ViewModel
             Task = task;
             CurrentStatus = task.Status;
             Statuses = role > Roles.Administrator
-                ? _statusRepository.ReadAll(x => x.Id != (int)Model.Database.Statuses.Done)
+                ? _statusRepository.ReadAllExclude(Model.Database.Statuses.Done)
                 : _statusRepository.ReadAll();
 
             Users = _membershipRepository.GetProjectUsers(task.ProjectId);

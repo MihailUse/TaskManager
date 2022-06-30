@@ -45,39 +45,6 @@ namespace TaskManager.Model.Database
             base.OnModelCreating(modelBuilder);
         }
 
-        public override int SaveChanges()
-        {
-            IEnumerable<DbEntityEntry> entries = ChangeTracker.Entries();
-            DateTime now = DateTime.Now;
-
-            foreach (DbEntityEntry entry in entries)
-            {
-                if (entry.Entity is ITimestamp trackable)
-                {
-                    switch (entry.State)
-                    {
-                        //case EntityState.Detached:
-                        //    break;
-                        //case EntityState.Unchanged:
-                        //    break;
-                        case EntityState.Added:
-                            trackable.CreatedAt = now;
-                            break;
-                        case EntityState.Deleted:
-                            trackable.DetetedAt = now;
-                            break;
-                        case EntityState.Modified:
-                            trackable.UpdatedAt = now;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            return base.SaveChanges();
-        }
-
         private static TaskManagerContext _instance;
         public static TaskManagerContext GetInstance()
         {

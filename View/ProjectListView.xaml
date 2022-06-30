@@ -141,14 +141,6 @@
                         <Setter.Value>
                             <ContextMenu StaysOpen="True">
                                 <MenuItem 
-                                    Header="_About"
-                                    Command="{Binding 
-                                        Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemAboutCommand), 
-                                        RelativeSource={RelativeSource AncestorType=ContextMenu},
-                                        IsAsync=True}" 
-                                    CommandParameter="{Binding Path=.}"/>
-
-                                <MenuItem 
                                     Header="_Edit"
                                     Command="{Binding 
                                         Path=PlacementTarget.Tag.(viewModels:ProjectListViewModel.ListItemEditCommand), 

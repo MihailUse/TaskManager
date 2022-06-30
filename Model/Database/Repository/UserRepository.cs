@@ -16,7 +16,7 @@ namespace TaskManager.Model.Database.Repository
 
         public bool IsExist(string login)
         {
-            return _context.User.Any(x => (x.Login == login) && !x.DetetedAt.HasValue);
+            return _context.User.Any(x => (x.Login == login));
         }
 
         public User Create(User user)
@@ -28,24 +28,7 @@ namespace TaskManager.Model.Database.Repository
 
         public User GetByLogin(string login)
         {
-            return _context.User.Where(x => (x.Login == login) && !x.DetetedAt.HasValue).FirstOrDefault();
-        }
-
-        public User Update(User newUser)
-        {
-            User user = _context.User.Find(newUser.Id);
-            if (user == null)
-                return null;
-
-            _context.Entry(user).CurrentValues.SetValues(newUser);
-            _context.SaveChanges();
-            return user;
-        }
-
-        public void Delete(User user)
-        {
-            _context.User.Remove(user);
-            _context.SaveChanges();
+            return _context.User.Where(x => (x.Login == login)).FirstOrDefault();
         }
 
         public List<User> GetAllByLogin(string login)

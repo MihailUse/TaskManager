@@ -31,11 +31,11 @@ namespace TaskManager.ViewModel
             MaximizeWindowCommand = new RelayCommand((p) => window.WindowState = WindowState.Maximized);
 
             _navigationManager = new NavigationManager();
-            //_navigationManager.CurrentViewModel = new AuthViewModel(_navigationManager);
-            _navigationManager.CurrentViewModel = new MainViewModel(
-                _navigationManager,
-                WindowViewModel.DatabaseContext.User.First(x => x.Login == "test")
-            );
+            _navigationManager.CurrentViewModel = new AuthViewModel(_navigationManager);
+            //_navigationManager.CurrentViewModel = new MainViewModel(
+            //    _navigationManager,
+            //    WindowViewModel.DatabaseContext.User.First(x => x.Login == "test")
+            //);
             _navigationManager.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
 

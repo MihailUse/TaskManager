@@ -14,26 +14,14 @@ namespace TaskManager.Model.Database.Repository
             _context = context;
         }
 
-        public Status Create(Status status)
-        {
-            Status newStatus = _context.Status.Add(status);
-            _context.SaveChanges();
-            return newStatus;
-        }
-
-        public Status Read(string name)
-        {
-            return _context.Status.Where(x => x.Name == name).FirstOrDefault();
-        }
-
         public List<Status> ReadAll()
         {
             return _context.Status.ToList();
         }
 
-        public List<Status> ReadAll(Expression<Func<Status, bool>> predicate)
+        public List<Status> ReadAllExclude(Statuses status)
         {
-            return _context.Status.Where(predicate).ToList();
+            return _context.Status.Where(x => x.Id != (int)status).ToList();
         }
     }
 }

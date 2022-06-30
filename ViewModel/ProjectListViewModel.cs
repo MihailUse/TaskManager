@@ -20,7 +20,6 @@ namespace TaskManager.ViewModel
     internal class ProjectListViewModel : BaseViewModel
     {
         public ICommand SetFilterCommand { get; }
-        public ICommand ListItemAboutCommand { get; }
         public ICommand ListItemEditCommand { get; }
         public ICommand ListItemTasksCommand { get; }
         public ICommand ListItemDeleteCommand { get; }
@@ -48,7 +47,6 @@ namespace TaskManager.ViewModel
 
             // init commands
             SetFilterCommand = new RelayCommand(setFilter);
-            ListItemAboutCommand = new RelayCommand((p) => { }, (p) => false);
             ListItemEditCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateProjectViewModel((ProjectItem)p), canEditProject);
             ListItemTasksCommand = new NavigateCommand(MainViewModel.NavigationManager, navigateTasks);
             ListItemDeleteCommand = new RelayCommand(deleteProject, canDeleteProject);

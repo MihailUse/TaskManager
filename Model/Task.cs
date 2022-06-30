@@ -1,10 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskManager.Model
 {
-    public class Task : ITimestamp
+    public class Task
     {
         [Key]
         public long Id { get; set; }
@@ -19,14 +18,6 @@ namespace TaskManager.Model
 
         [StringLength(16384, ErrorMessage = "Description must be no more than 16384 characters")]
         public string Description { get; set; }
-
-        #region timestamps
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime? UpdatedAt { get; set; }
-
-        public DateTime? DetetedAt { get; set; }
-        #endregion
 
 
         [Required, ForeignKey("Project")]

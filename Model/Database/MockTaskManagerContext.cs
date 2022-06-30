@@ -65,8 +65,6 @@ namespace TaskManager.Model.Database
                     About = $"someAbout{i}",
                     Avatar = ImageGenerator.GenerateImage(),
                     Password = Argon2.Hash($"test{i}", timeCost: 1, parallelism: Environment.ProcessorCount, hashLength: 128),
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
                 });
             }
 
@@ -114,8 +112,6 @@ namespace TaskManager.Model.Database
                     Name = $"testProject{i}",
                     Description = $"someDescription{i}",
                     Logo = ImageGenerator.GenerateImage(),
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
                     Membership = memberships.Where(x => x.ProjectId == i).ToList(),
                     Task = new List<Task>()
                 });
@@ -138,8 +134,6 @@ namespace TaskManager.Model.Database
                     User = users.Where(x => x.Id == i).First(),
                     StatusId = i % 5,
                     Status = statuses[i % 5],
-                    CreatedAt = DateTime.Now,
-                    UpdatedAt = DateTime.Now,
                 });
             }
 

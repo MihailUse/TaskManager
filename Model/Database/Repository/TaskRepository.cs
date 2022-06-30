@@ -27,14 +27,9 @@ namespace TaskManager.Model.Database.Repository
             return newProject;
         }
 
-        public Task Read(Expression<Func<Task, bool>> predicate)
-        {
-            return _context.Task.Where(predicate).FirstOrDefault();
-        }
-
         public List<Task> GetTaskItems(long projectId, User user = null, string status = null)
         {
-            IQueryable<Task> query = _context.Task.Where(x => (x.ProjectId == projectId) && !x.DetetedAt.HasValue);
+            IQueryable<Task> query = _context.Task.Where(x => (x.ProjectId == projectId));
 
             if (user != null)
                 query = query.Where(x => x.UserId == user.Id);
@@ -47,11 +42,6 @@ namespace TaskManager.Model.Database.Repository
                 .ToList();
         }
 
-        public List<Task> ReadAll(Expression<Func<Task, bool>> predicate = null)
-        {
-            return _context.Task.Where(predicate).ToList();
-        }
-
         public Task Update(Task newTask)
         {
             Task task = _context.Task.Find(newTask.Id);
@@ -61,12 +51,6 @@ namespace TaskManager.Model.Database.Repository
             _context.Entry(task).CurrentValues.SetValues(newTask);
             _context.SaveChanges();
             return task;
-        }
-
-        public void Delete(Task task)
-        {
-            _context.Task.Remove(task);
-            _context.SaveChanges();
         }
     }
 }

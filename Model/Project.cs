@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskManager.Model
 {
-    public class Project : ITimestamp
+    public class Project
     {
         [Key]
         public long Id { get; set; }
@@ -25,13 +24,6 @@ namespace TaskManager.Model
         [Required]
         public byte[] Logo { get; set; }
 
-        #region timestamps
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime? UpdatedAt { get; set; }
-
-        public DateTime? DetetedAt { get; set; }
-        #endregion
 
         public virtual List<Membership> Membership { get; set; }
         public virtual List<Task> Task { get; set; }
