@@ -58,6 +58,7 @@ namespace TaskManager.ViewModel
             Projects = _projectRepository.GetUserProjects(MainViewModel.User);
             CurrentProject = project ?? Projects.First();
             Users = _membershipRepository.GetProjectUsers(CurrentProject);
+            CurrentUser = Users.Single(x => x.Id == MainViewModel.User.Id);
             Statuses = _statusRepository.ReadAllExclude(Model.Database.Statuses.Done);
             CurrentStatus = Statuses.Single(x => x.Id == (int)Model.Database.Statuses.TODO);
 
