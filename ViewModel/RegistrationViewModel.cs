@@ -75,7 +75,7 @@ namespace TaskManager.ViewModel
             try
             {
                 _user.Password = Argon2.Hash(_user.Password, timeCost: 10, parallelism: Environment.ProcessorCount, hashLength: 128);
-                _user.Avatar = ImageConvertor.BitmapToBytes(ImageGenerator.GenerateImage());
+                _user.Avatar = ImageGenerator.GenerateImage();
                 _user = _userRepository.Create(_user);
             }
             catch (Exception error)

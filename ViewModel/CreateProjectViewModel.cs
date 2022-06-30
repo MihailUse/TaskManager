@@ -165,7 +165,7 @@ namespace TaskManager.ViewModel
 
         private void generateImage(object parameter)
         {
-            Logo = ImageConvertor.BitmapToBytes(ImageGenerator.GenerateImage());
+            Logo = ImageGenerator.GenerateImage();
         }
 
         // validate uniq name and create project
