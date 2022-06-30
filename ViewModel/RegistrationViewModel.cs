@@ -10,33 +10,27 @@ using TaskManager.Model.Database.Repository;
 
 namespace TaskManager.ViewModel
 {
-    internal class RegistrationViewModel : BaseViewModel
+    internal class RegistrationViewModel : BaseFormViewModel
     {
         public ICommand NavigateAuthCommand { get; }
         public NavigateCommand ConfirmCommand { get; }
 
-        public bool HasError { get; private set; }
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { _errorMessage = value; HasError = true; OnPropertyChanged(nameof(ErrorMessage)); }
-        }
         public string Login
         {
-            get { return _login; }
+            get { return _user.Login; }
             set
             {
-                _login = value;
+                _user.Login = value;
                 OnPropertyChanged(nameof(Login));
                 ValidateProperty(value, nameof(User.Login), _user);
             }
         }
         public string Password
         {
-            get { return _password; }
+            get { return _user.Password; }
             set
             {
-                _password = value;
+                _user.Password = value;
                 OnPropertyChanged(nameof(Password));
                 OnPropertyChanged(nameof(RepeatPassword));
                 ValidateProperty(value, nameof(User.Password), _user);
@@ -49,16 +43,13 @@ namespace TaskManager.ViewModel
             {
                 _repeatPassword = value;
                 OnPropertyChanged(nameof(RepeatPassword));
-                if (_password != value)
+                if (_user.Password != value)
                     throw new ValidationException("Passwords do not match");
             }
         }
 
         private User _user;
-        private string _login;
-        private string _password;
         private string _repeatPassword;
-        private string _errorMessage;
         private readonly UserRepository _userRepository;
 
         public RegistrationViewModel(NavigationManager windowNavigationManager)
@@ -66,6 +57,7 @@ namespace TaskManager.ViewModel
             _user = new User();
             _userRepository = new UserRepository(WindowViewModel.DatabaseContext);
 
+            // init commands
             NavigateAuthCommand = new NavigateCommand(windowNavigationManager, (p) => new AuthViewModel(windowNavigationManager));
             ConfirmCommand = new NavigateCommand(windowNavigationManager, (p) => new MainViewModel(windowNavigationManager, _user), canExecute, canNavigate);
             PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
@@ -74,7 +66,7 @@ namespace TaskManager.ViewModel
         // validate uniq login and create new user
         private bool canNavigate()
         {
-            if (_userRepository.IsExist(_login))
+            if (_userRepository.IsExist(_user.Login))
             {
                 ErrorMessage = "Login already exists";
                 return false;
@@ -82,14 +74,12 @@ namespace TaskManager.ViewModel
 
             try
             {
-                _user.Login = _login;
-                _user.Password = Argon2.Hash(_password, timeCost: 10, parallelism: Environment.ProcessorCount, hashLength: 128);
+                _user.Password = Argon2.Hash(_user.Password, timeCost: 10, parallelism: Environment.ProcessorCount, hashLength: 128);
                 _user.Avatar = ImageConvertor.BitmapToBytes(ImageGenerator.GenerateImage());
                 _user = _userRepository.Create(_user);
             }
             catch (Exception error)
             {
-                _user = new User();
                 ErrorMessage = $"Error {error.Message}";
                 return false;
             }
@@ -102,9 +92,9 @@ namespace TaskManager.ViewModel
         {
             try
             {
-                ValidateProperty(_login, nameof(User.Login), _user);
-                ValidateProperty(_password, nameof(User.Password), _user);
-                if (_password != _repeatPassword)
+                ValidateProperty(_user.Login, nameof(User.Login), _user);
+                ValidateProperty(_user.Password, nameof(User.Password), _user);
+                if (_user.Password != _repeatPassword)
                     throw new ValidationException("Passwords do not match");
             }
             catch (ValidationException)

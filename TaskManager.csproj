@@ -155,6 +155,7 @@
     <Compile Include="Model\SubModels\ProjectItem.cs" />
     <Compile Include="Model\Task.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="ViewModel\BaseFormViewModel.cs" />
     <Compile Include="ViewModel\CreateProjectViewModel.cs" />
     <Compile Include="ViewModel\CreateTaskViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />

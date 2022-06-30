@@ -41,7 +41,7 @@ namespace TaskManager.Model.Database
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("public");
+            modelBuilder.HasDefaultSchema("public"); // set schema for pg
             base.OnModelCreating(modelBuilder);
         }
 

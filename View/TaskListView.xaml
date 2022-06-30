@@ -162,19 +162,21 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu StaysOpen="True">
-                                <MenuItem Header="_Show"
-                                          Command="{Binding 
-                                    Path=PlacementTarget.Tag.(viewModels:TaskListViewModel.ListItemAboutCommand), 
-                                    RelativeSource={RelativeSource AncestorType=ContextMenu},
-                                    IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                <MenuItem 
+                                    Header="_Show"
+                                    Command="{Binding 
+                                        Path=PlacementTarget.Tag.(viewModels:TaskListViewModel.ListItemAboutCommand), 
+                                        RelativeSource={RelativeSource AncestorType=ContextMenu},
+                                        IsAsync=True}" 
+                                    CommandParameter="{Binding Path=.}"/>
 
-                                <MenuItem Header="_Edit"
-                                          Command="{Binding 
-                                    Path=PlacementTarget.Tag.(viewModels:TaskListViewModel.ListItemEditCommand), 
-                                    RelativeSource={RelativeSource AncestorType=ContextMenu},
-                                    IsAsync=True}" 
-                                          CommandParameter="{Binding Path=.}"/>
+                                <MenuItem 
+                                    Header="_Edit"
+                                        Command="{Binding 
+                                        Path=PlacementTarget.Tag.(viewModels:TaskListViewModel.ListItemEditCommand), 
+                                        RelativeSource={RelativeSource AncestorType=ContextMenu},
+                                        IsAsync=True}" 
+                                    CommandParameter="{Binding Path=.}"/>
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

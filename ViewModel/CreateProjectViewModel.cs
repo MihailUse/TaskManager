@@ -1,21 +1,18 @@
 ﻿using ImageLibrary;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using TaskManager.Command;
 using TaskManager.Model;
 using TaskManager.Model.Database;
 using TaskManager.Model.Database.Repository;
-using TaskManager.Model.SubModels;
 
 namespace TaskManager.ViewModel
 {
-    internal class CreateProjectViewModel : BaseViewModel
+    internal class CreateProjectViewModel : BaseFormViewModel
     {
         public NavigateCommand ConfirmCommand { get; }
         public ICommand GenerateImageCommand { get; }
@@ -24,42 +21,33 @@ namespace TaskManager.ViewModel
         public ICommand SetDeveloperCommand { get; }
         public ICommand SetAdministratorCommand { get; }
 
-        public bool HasError { get; private set; }
-        public string ErrorMessage
-        {
-            get { return _errorMessage; }
-            set { _errorMessage = value; HasError = true; OnPropertyChanged(nameof(ErrorMessage)); }
-        }
         public byte[] Logo
         {
-            get { return _logo; }
+            get { return _project.Logo; }
             set
             {
-                _logo = value;
                 _project.Logo = value;
                 OnPropertyChanged(nameof(Logo));
             }
         }
         public string Name
         {
-            get { return _name; }
+            get { return _project.Name; }
             set
             {
-                _name = value;
+                _project.Name = value;
                 OnPropertyChanged(nameof(Name));
                 ValidateProperty(value, nameof(Project.Name), _project);
-                _project.Name = value;
             }
         }
         public string Description
         {
-            get { return _description; }
+            get { return _project.Description; }
             set
             {
-                _description = value;
+                _project.Description = value;
                 OnPropertyChanged(nameof(Description));
                 ValidateProperty(value, nameof(Project.Description), _project);
-                _project.Description = value;
             }
         }
         public string SearchText
@@ -85,7 +73,6 @@ namespace TaskManager.ViewModel
 
                     Memberships.Add(new Membership()
                     {
-                        ProjectId = _project.Id,
                         UserId = value.Id,
                         User = value,
                         RoleId = (int)Roles.Developer
@@ -99,68 +86,40 @@ namespace TaskManager.ViewModel
 
         private string _searchText;
         private User _selectedUser;
-        private byte[] _logo;
-        private string _name;
-        private string _description;
-        private string _errorMessage;
         private Project _project;
         private readonly User _user;
         private readonly UserRepository _userRepository;
         private readonly ProjectRepository _projectRepository;
         private readonly MembershipRepository _membershipRepository;
 
-        public CreateProjectViewModel()
-        {
-            _user = MainViewModel.User;
-            _project = new Project();
-            _userRepository = new UserRepository(WindowViewModel.DatabaseContext);
-            _projectRepository = new ProjectRepository(WindowViewModel.DatabaseContext);
-            _membershipRepository = new MembershipRepository(WindowViewModel.DatabaseContext);
-
-            // init props
-            Logo = _user.Avatar;
-            SearchableUsers = new ObservableCollection<User>();
-            Memberships = new ObservableCollection<Membership>() { 
-                new Membership() { UserId = _user.Id, User = _user, RoleId = (int)Roles.Owner} 
-            };
-
-            //init commands
-            ConfirmCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new ProjectListViewModel(), canExecute, canNavigate);
-            PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
-            GenerateImageCommand = new RelayCommand(generateImage);
-            DeleteUserCommand = new RelayCommand(deleteMembership, isOwner);
-            SetTesterCommand = new RelayCommand(setRole(Roles.Tester), isOwner);
-            SetDeveloperCommand = new RelayCommand(setRole(Roles.Developer), isOwner);
-            SetAdministratorCommand = new RelayCommand(setRole(Roles.Administrator), isOwner);
-        }
-
-        public CreateProjectViewModel(Project project)
+        public CreateProjectViewModel(Project project = null)
         {
             _user = MainViewModel.User;
             _userRepository = new UserRepository(WindowViewModel.DatabaseContext);
             _projectRepository = new ProjectRepository(WindowViewModel.DatabaseContext);
             _membershipRepository = new MembershipRepository(WindowViewModel.DatabaseContext);
-            _project = _projectRepository.Find(project.Id);
+            _project = project == null
+                ? new Project() { Logo = _user.Avatar }
+                : _projectRepository.Find(project.Id);
 
             // init props
-            Logo = _project.Logo;
-            Name = _project.Name;
-            Description = _project.Description;
             SearchableUsers = new ObservableCollection<User>();
-            Memberships = new ObservableCollection<Membership>(_membershipRepository.GetProjectMemberships(_project.Id));
+            Memberships = project == null
+                ? new ObservableCollection<Membership>() { new Membership() { UserId = _user.Id, User = _user, RoleId = (int)Roles.Owner } }
+                : new ObservableCollection<Membership>(_membershipRepository.GetProjectMemberships(_project.Id));
 
             //init commands
             ConfirmCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new ProjectListViewModel(), canExecute, canNavigate);
             PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
             GenerateImageCommand = new RelayCommand(generateImage);
-            SetTesterCommand = new RelayCommand(setRole(Roles.Tester), isOwner);
-            SetDeveloperCommand = new RelayCommand(setRole(Roles.Developer), isOwner);
-            SetAdministratorCommand = new RelayCommand(setRole(Roles.Administrator), isOwner);
-            DeleteUserCommand = new RelayCommand(deleteMembership, isOwner);
+            DeleteUserCommand = new RelayCommand(deleteMembership, isNotOwner);
+            SetTesterCommand = new RelayCommand(setRole(Roles.Tester), isNotOwner);
+            SetDeveloperCommand = new RelayCommand(setRole(Roles.Developer), isNotOwner);
+            SetAdministratorCommand = new RelayCommand(setRole(Roles.Administrator), isNotOwner);
         }
 
         #region membership list methods
-        private bool isOwner(object parameter)
+        private bool isNotOwner(object parameter)
         {
             Membership membership = parameter as Membership;
             return membership.UserId != _user.Id;
@@ -169,18 +128,21 @@ namespace TaskManager.ViewModel
         {
             Membership membership = parameter as Membership;
             Memberships.Remove(membership);
-            _membershipRepository.Delete(membership);
+
+            // if dont exists
+            if (membership.Id != 0)
+                _membershipRepository.Delete(membership);
         }
         private Action<object> setRole(Roles role)
         {
             return (parameter) =>
             {
                 Membership membership = parameter as Membership;
-                Membership selectedMembership = Memberships.First(x => x.Id == membership.Id);
-                int index = Memberships.IndexOf(membership);
+                Membership selectedMembership = Memberships.First(x => x.UserId == membership.UserId);
+                selectedMembership.RoleId = (int)role;
 
                 // update membership in collection
-                selectedMembership.RoleId = (int)role;
+                int index = Memberships.IndexOf(selectedMembership);
                 Memberships.RemoveAt(index);
                 Memberships.Insert(index, selectedMembership);
             };
@@ -240,8 +202,8 @@ namespace TaskManager.ViewModel
         {
             try
             {
-                ValidateProperty(_name, nameof(Project.Name), _project);
-                ValidateProperty(_description, nameof(Project.Description), _project);
+                ValidateProperty(_project.Name, nameof(Project.Name), _project);
+                ValidateProperty(_project.Description, nameof(Project.Description), _project);
             }
             catch (ValidationException)
             {
