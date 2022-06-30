@@ -38,14 +38,14 @@ namespace TaskManager.ViewModel
         private TaskFilter _filter;
         private List<Task> _tasks;
         private readonly User _user;
-        private readonly TaskRepository _repository;
+        private readonly TaskRepository _taskRepository;
 
         public TaskListViewModel(Project project = null)
         {
 
             _user = MainViewModel.User;
             _filter = TaskFilter.AllTasks;
-            _repository = new TaskRepository(WindowViewModel.DatabaseContext);
+            _taskRepository = new TaskRepository(WindowViewModel.DatabaseContext);
 
             // load default filter 
             Projects = new ProjectRepository(WindowViewModel.DatabaseContext).GetUserProjects(_user);
@@ -53,8 +53,8 @@ namespace TaskManager.ViewModel
 
             // init commands
             SetFilterCommand = new RelayCommand(setFilter);
+            ListItemEditCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateTaskViewModel((Task)p));
             ListItemAboutCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new TaskViewModel((Task)p));
-            ListItemEditCommand = new RelayCommand((p) => throw new NotImplementedException("ListItemEditCommand"), (p) => false);
             CreateTaskCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new CreateTaskViewModel(CurrentProject), (p) => CurrentProject != null);
         }
 
@@ -73,10 +73,10 @@ namespace TaskManager.ViewModel
             switch (_filter)
             {
                 case TaskFilter.AllTasks:
-                    Tasks = _repository.GetTaskItems(_currentProject.Id);
+                    Tasks = _taskRepository.GetTaskItems(_currentProject.Id);
                     break;
                 case TaskFilter.UserTasks:
-                    Tasks = _repository.GetTaskItems(_currentProject.Id, _user);
+                    Tasks = _taskRepository.GetTaskItems(_currentProject.Id, _user);
                     break;
             }
         }
