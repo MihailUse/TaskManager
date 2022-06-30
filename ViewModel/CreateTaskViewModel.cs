@@ -59,6 +59,23 @@ namespace TaskManager.ViewModel
             PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
         }
 
+        public CreateTaskViewModel(Task task)
+        {
+            _task = task;
+            _taskRepository = new TaskRepository(WindowViewModel.DatabaseContext);
+            _projectRepository = new ProjectRepository(WindowViewModel.DatabaseContext);
+            _membershipRepository = new MembershipRepository(WindowViewModel.DatabaseContext);
+
+            Projects = _projectRepository.GetUserProjects(MainViewModel.User);
+            CurrentProject = Projects.Single(x => x.Id == _task.ProjectId);
+            Users = _membershipRepository.GetProjectUsers(CurrentProject);
+            CurrentUser = Users.Single(x => x.Id == _task.UserId);
+
+            //init commands
+            ConfirmCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new TaskListViewModel(CurrentProject), canExecute, canNavigate);
+            PropertyChanged += ConfirmCommand.OnViewModelPropertyChanged;
+        }
+
         // validate uniq name and create project
         private bool canNavigate()
         {
