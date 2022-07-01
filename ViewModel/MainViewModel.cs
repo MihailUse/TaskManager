@@ -16,7 +16,6 @@ namespace TaskManager.ViewModel
 
     internal class MainViewModel : BaseViewModel
     {
-        public ICommand NavigateHomeCommand { get; }
         public ICommand NavigateTasksCommand { get; }
         public ICommand NavigateProjectsCommand { get; }
         public ICommand LogoutCommand { get; }
@@ -41,7 +40,6 @@ namespace TaskManager.ViewModel
             Avatar = user.Avatar;
 
             // init commands
-            NavigateHomeCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new HomeViewModel());
             NavigateTasksCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new TaskListViewModel());
             NavigateProjectsCommand = new NavigateCommand(MainViewModel.NavigationManager, (p) => new ProjectListViewModel());
             LogoutCommand = new NavigateCommand(windowNavigationManager, (p) => new AuthViewModel(windowNavigationManager));

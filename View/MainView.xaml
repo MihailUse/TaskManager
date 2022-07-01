@@ -78,9 +78,6 @@
                 <DataTemplate DataType="{x:Type viewModels:ProjectListViewModel}">
                     <local:ProjectListView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
-                    <local:HomeView/>
-                </DataTemplate>
                 <DataTemplate DataType="{x:Type viewModels:CreateProjectViewModel}">
                     <local:CreateProjectView/>
                 </DataTemplate>
